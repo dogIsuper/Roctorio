@@ -1,0 +1,74 @@
+#:set UNIT 60
+# UNIT = 40: 1920x1080 -> 48x27
+# UNIT = 60: 1920x1080 -> 32x18
+
+
+#:set SIZE 256
+#:set OFFSET_X SIZE * 1 / 4 * (3 ** 0.5)
+#:set OFFSET_Y SIZE * 3 / 4
+
+<ColouredWidget@Widget>:
+  backcolor:       0.1, 0.1, 0.1, 1
+  forecolor:       1.0, 1.0, 1.0, 1
+  
+  color:           self.forecolor
+  
+  canvas.before:
+    Color:
+      rgba:        self.backcolor
+    Rectangle:
+      pos:         self.pos
+      size:        self.size
+
+<ColouredLabel@ColouredWidget+Label>:
+  font_size:            16
+
+<ColouredFloatLayout@ColouredWidget+FloatLayout>
+
+<Hex@Widget>:
+  color:                1.0, 0.5, 0.0, 1.0
+  px:                   0
+  py:                   0
+  dx:                   0
+  dy:                   0
+  
+  size_hint:            None, None
+  size:                 SIZE, SIZE
+  pos:                  self.px * OFFSET_X * 2 + self.py * OFFSET_X - self.dx * OFFSET_X, self.py * OFFSET_Y - self.dy * OFFSET_Y
+  
+  canvas.after:
+    Color:
+      rgba:             root.color
+    
+    Ellipse:
+      pos:              root.pos
+      size:             SIZE, SIZE
+      segments:         6
+
+<Playground@ColouredFloatLayout>:
+  backcolor:            1.0, 1.0, 1.0, 1
+  
+  ColouredLabel:
+    id:                 tps_meter
+    
+    backcolor:          0.8, 0.8, 0.8, 1
+    forecolor:          0.0, 0.0, 0.0, 1
+    
+    size_hint:          None, None
+    size:               UNIT * 3, UNIT
+    pos_hint:           {'top': 1, 'left': 0}
+    
+  
+  Hex:
+    id:                 playground_test_hex
+    
+    px:                 0
+    py:                 0
+  
+  Hex:
+    px:                 1
+    py:                 0
+  
+  Hex:
+    px:                 0
+    py:                 1
