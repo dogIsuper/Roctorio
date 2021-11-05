@@ -26,7 +26,7 @@
 <ColouredFloatLayout@ColouredWidget+FloatLayout>
 
 <Hex@Widget>:
-  color:                1.0, 0.5, 0.0, 1.0
+  tx_source:            'assets\\tiles\\desert-256-b.png'
   px:                   0
   py:                   0
   dx:                   0
@@ -37,15 +37,14 @@
   pos:                  self.px * OFFSET_X * 2 + self.py * OFFSET_X - self.dx * OFFSET_X, self.py * OFFSET_Y - self.dy * OFFSET_Y
   
   canvas.after:
-    Color:
-      rgba:             root.color
-    
     Ellipse:
       pos:              root.pos
       size:             SIZE, SIZE
       segments:         6
+      source:           root.tx_source
 
 <InfiniteHexGrid@FloatLayout>:
+<DecorationsGrid@FloatLayout>:
 
 <GameInterface@ColouredFloatLayout>:
   backcolor:            1.0, 1.0, 1.0, 1

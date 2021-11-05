@@ -40,4 +40,5 @@ class GameObject(IGameObject):
   
   def step(self):
     self.app.tps = self.tps.get_tps()
+    
     self.world.draw(initial=False)

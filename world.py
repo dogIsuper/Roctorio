@@ -11,13 +11,9 @@ class GridWorld(IWorld):
   def __init__(self, playground):
     IWorld.__init__(self)
     
-    colors = [(1.0, 0.2, 1.0, 1),
-              (1.0, 0.2, 0.6, 1),
-              (1.0, 0.2, 0.2, 1),
-              (1.0, 0.4, 0.2, 1),
-              (1.0, 0.6, 0.2, 1)]
+    self.blocks = [['assets\\tiles\\grass-256-b.png' for j in range(8)] for i in range(8)]
+    self.tiles = []
     
-    self.blocks = [[colors[(i + j) % 5] for j in range(8)] for i in range(8)]
     self.playground = playground
     
     self.draw(initial=True)
@@ -27,9 +23,15 @@ class GridWorld(IWorld):
     if initial:
       self.playground.clear_widgets()
       
+      self.tiles = []
       for i, row in enumerate(self.blocks):
+        self.tiles.append([])
         for j, cell in enumerate(row):
           hex = Factory.Hex()
           hex.px, hex.py = j, i
-          hex.color = cell
           self.playground.add_widget(hex)
+          self.tiles[-1].append(hex)
+    
+    for i, row in enumerate(self.blocks):
+      for j, cell in enumerate(row):
+        self.tiles[i][j].tx_source = cell

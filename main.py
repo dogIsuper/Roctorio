@@ -5,12 +5,13 @@
 # (c) 2021, ProgramCrafter, dogIsuper, KarmaNT, SmartMushroom
 
 from kivy.config import Config
-Config.set('graphics', 'maxfps', 20)
+Config.set('graphics', 'maxfps', 50)
 
 from kivy.factory import Factory
 from kivy.clock import Clock
 from kivy.app import App
 
+import time
 import os
 
 from gameobject import GameObject
@@ -23,8 +24,13 @@ class RoctorioGameThread:
     Clock.schedule_once(self.update, 0)
   
   def update(self, timer):
+    step_start = time.time()
     self.app.game.step()
-    self.app.root.ids.tps_meter.text = 'TPS: %.3f' % self.app.tps
+    step_end = time.time()
+    
+    sps = 1.0 / max(step_end - step_start, 0.000001) # simulation steps per second
+    
+    self.app.root.ids.tps_meter.text = 'TPS: %.3f\nSPS: %.3f' % (self.app.tps, sps)
     
     Clock.schedule_once(self.update, 0)
 
