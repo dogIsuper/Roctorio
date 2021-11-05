@@ -3,7 +3,7 @@
 # UNIT = 60: 1920x1080 -> 32x18
 
 
-#:set SIZE 256
+#:set SIZE 128
 #:set OFFSET_X SIZE * 1 / 4 * (3 ** 0.5)
 #:set OFFSET_Y SIZE * 3 / 4
 
@@ -45,7 +45,9 @@
       size:             SIZE, SIZE
       segments:         6
 
-<Playground@ColouredFloatLayout>:
+<InfiniteHexGrid@FloatLayout>:
+
+<GameInterface@ColouredFloatLayout>:
   backcolor:            1.0, 1.0, 1.0, 1
   
   ColouredLabel:
@@ -58,17 +60,5 @@
     size:               UNIT * 3, UNIT
     pos_hint:           {'top': 1, 'left': 0}
     
-  
-  Hex:
-    id:                 playground_test_hex
-    
-    px:                 0
-    py:                 0
-  
-  Hex:
-    px:                 1
-    py:                 0
-  
-  Hex:
-    px:                 0
-    py:                 1
+  InfiniteHexGrid:
+    id:                 playground

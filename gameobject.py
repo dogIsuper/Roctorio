@@ -1,6 +1,6 @@
 from utils import DisallowInterfaceInstantiation
-
 from invariants import NoExcept
+from world import GridWorld
 
 import time
 
@@ -28,6 +28,7 @@ class GameObject(IGameObject):
   def __init__(self, app):
     IGameObject.__init__(self)
     
+    self.world = GridWorld(app.root.ids.playground)
     self.app = app
     
     self.tps = TpsMeter()
@@ -39,3 +40,4 @@ class GameObject(IGameObject):
   
   def step(self):
     self.app.tps = self.tps.get_tps()
+    self.world.draw(initial=False)

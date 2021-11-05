@@ -2,7 +2,7 @@
 # Roctorio is game similar to Factorio which uses hexagonal field.
 # You control the raccoon that tries to build his base on an unknown planet.
 #
-# (c) 2021, ProgramCrafter, dogIsuper, KarmaNT, 
+# (c) 2021, ProgramCrafter, dogIsuper, KarmaNT, SmartMushroom
 
 from kivy.config import Config
 Config.set('graphics', 'maxfps', 20)
@@ -30,11 +30,8 @@ class RoctorioGameThread:
 
 class RoctorioApp(App):
   def build(self):
+    self.root = Factory.GameInterface()
     self.game = GameObject(self)
-    self.root = Factory.Playground()
-    
-    hex_path = os.path.abspath(__file__ + '\\..\\hex-example.png')
-    self.root.ids.playground_test_hex.export_to_png(hex_path)
     
     self.tps = 0.0
     
