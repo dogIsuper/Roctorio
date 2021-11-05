@@ -9,9 +9,11 @@ class ITpsMeter(DisallowInterfaceInstantiation):
   def get_tps(self): pass
 
 class TpsMeter(ITpsMeter):
+  @NoExcept
   def start(self):
     self.last_tick = time.time() - 0.001
   
+  @NoExcept
   def get_tps(self):
     cur_tick = time.time()
     tps = 1 / max(cur_tick - self.last_tick, 0.001)
@@ -25,6 +27,7 @@ class IGameObject(DisallowInterfaceInstantiation):
   def run_forever(self):  pass
 
 class GameObject(IGameObject):
+  @NoExcept
   def __init__(self, app):
     IGameObject.__init__(self)
     
@@ -34,11 +37,13 @@ class GameObject(IGameObject):
     self.tps = TpsMeter()
     self.tps.start()
   
+  @NoExcept
   def log(self, *messages):
     message = ' '.join(str(m) for m in messages)
     print('[LOG %s] %s' % (time.strftime('%d-%m-%Y %H:%M:%S'), message))
   
+  @NoExcept
   def step(self):
     self.app.tps = self.tps.get_tps()
     
-    self.world.draw(initial=False)
+    self.world.draw()

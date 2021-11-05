@@ -8,7 +8,7 @@ def NoExcept(fn):
     try:
       return fn(*a, **k)
     except Exception as exc:
-      raise InvariantFailedError(fn.__qualname__) from exc
+      raise InvariantFailedError(fn.__qualname__ + ' raised exception violating NoExcept invariant') from exc
   
   inner.__name__ = fn.__name__
   inner.__qualname__ = fn.__qualname__
