@@ -10,7 +10,7 @@ class IBlock(DisallowInterfaceInstantiation):
   def draw(self):                     pass
 
 class Block(IBlock):
-  tx_source = 'assets\\tiles\\grass-256.png'
+  tx_source = 'assets\\tiles\\grass-256-b.png'
   
   @NoExcept
   def __init__(self, canvas, px, py):
