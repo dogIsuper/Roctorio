@@ -36,7 +36,7 @@
 
 <MechanismDeltaCalc@HexPositionable>:
   side:                 0
-  dx:                   (OFFSET_X     + SIZE / 2 if self.side in [0, 1] else (OFFSET_X / 2 + SIZE / 4 if self.side in [2, 5] else 0)) - 8
+  dx:                   (OFFSET_X + SIZE / 2 if self.side in [0, 1] else (OFFSET_X / 2 + SIZE / 4 if self.side in [2, 5] else 0)) - 8
   dy:                   (OFFSET_Y if self.side in [0, 4] else (SIZE / 4 if self.side in [1, 3] else (SIZE if self.side == 5 else 0))) - 8
 
 ### position utils end ###
@@ -53,26 +53,41 @@
       rgba:             1.0, 1.0, 1.0, 1
     
     Ellipse:
-      pos:              root.pos
-      size:             SIZE, SIZE
       segments:         6
-      source:           root.tx_source
-  
+      pos:              self.pos
+      size:             self.size
+      source:           self.tx_source
+
 ### drawing utils end ###
 
 <Hex@HexPositionable+HexagonDrawer>:
 
-<Decoration@Widget>:
+<Decoration@HexPositionable>:
+  tx_source:            'assets\\decorations\\copper-pipe-16-76.png'
+  
+  side:                 0
+  
+  dec_offset:           6
+  
   size_hint:            None, None
-  size:                 16, 16
+  width:                16
+  height:               SIZE / 2 + self.dec_offset * 2
   
   canvas.after:
     Color:
-      rgba:             0.2, 0.2, 0.8, 1
+      rgba:             1.0, 1.0, 1.0, 1
     
-    Ellipse:
-      pos:              root.pos
-      size:             root.size
+    PushMatrix
+    Rotate:
+      angle:            60 * self.side
+      origin:           self.x + OFFSET_X + 8, self.y + SIZE / 2
+    
+    Rectangle:
+      pos:              self.x + OFFSET_X * 2, self.y + SIZE / 4 - self.dec_offset
+      size:             self.size
+      source:           self.tx_source
+    
+    PopMatrix
 
 <Mechanism@MechanismDeltaCalc>:
   size_hint:            None, None
@@ -83,8 +98,8 @@
       rgba:             1, 1, 0, 1
     
     Ellipse:
-      pos:              root.pos
-      size:             root.size
+      pos:              self.pos
+      size:             self.size
       
 
 <InfiniteHexGrid@FloatLayout>:

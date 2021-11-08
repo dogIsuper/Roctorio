@@ -1,6 +1,7 @@
 from utils import DisallowInterfaceInstantiation
 from invariants import NoExcept
 
+from decoration import Decoration
 from mechanism import Mechanism
 from block import Block
 
@@ -14,6 +15,7 @@ class GridWorld(IWorld):
     IWorld.__init__(self, playground)
     
     self.blocks = [[Block(playground, j, i) for j in range(8)] for i in range(8)]
+    self.decorations = [Decoration(playground, 3, 3, i) for i in range(6)]
     self.mechanisms = [Mechanism(playground, 1, 1, j) for j in range(6)]
     
     self.playground = playground
@@ -25,6 +27,9 @@ class GridWorld(IWorld):
     for row in self.blocks:
       for block in row:
         block.draw()
+    
+    for decoration in self.decorations:
+      decoration.draw()
     
     for mechanism in self.mechanisms:
       mechanism.draw()
