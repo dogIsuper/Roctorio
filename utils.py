@@ -31,6 +31,18 @@ class SymbolDecorationsPathParser:
   def parse_to_globals(path, SIZE, px=0, py=0):
     yield from SymbolDecorationsPathParser.coords_to_globals(SymbolDecorationsPathParser.parse(path, px, py), SIZE)
 
+class DecorCoordNormalizer:
+  def normalize(px, py, side):
+    if side < 3:
+      return px, py, side
+    
+    if side == 3:
+      return px - 1, py, 0
+    if side == 4:
+      return px - 1, py + 1, 1
+    if side == 5:
+      return px, py + 1, 2
+
 class MechCoordNormalizer:
   def normalize(px, py, side):
     if side in [0, 1]:

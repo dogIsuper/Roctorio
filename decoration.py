@@ -1,6 +1,6 @@
 from kivy.factory import Factory
 
-from utils import DisallowInterfaceInstantiation, SymbolDecorationsPathParser
+from utils import DisallowInterfaceInstantiation, DecorCoordNormalizer
 from invariants import NoExcept
 
 class IDecoration(DisallowInterfaceInstantiation):
@@ -14,8 +14,7 @@ class Decoration(IDecoration):
   
   @NoExcept
   def __init__(self, canvas, px, py, side):
-    self.side = side
-    self.pos = px, py
+    *self.pos, self.side = DecorCoordNormalizer.normalize(px, py, side)
     self.canvas = canvas
     self.widget = None
   

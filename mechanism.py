@@ -6,7 +6,7 @@ from invariants import NoExcept
 class IMechanism(DisallowInterfaceInstantiation):
   tx_source = ''
   
-  def __init__(self, canvas, SIZE, lx, by): pass
+  def __init__(self, canvas, px, py, side): pass
   def draw(self): pass
 
 class Mechanism(IMechanism):
