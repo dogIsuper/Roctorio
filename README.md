@@ -2,7 +2,7 @@
 
 [Work In Progress]
 
-# Installation
+# First installation
 
 * Install Python (any version between 3.7 and 3.9)
 * Install Git
@@ -14,7 +14,10 @@
   * `git clone https://github.com/ProgramCrafter/Roctorio.git`
 
 # Running
-* Just execute *main.py*.
+* Just execute `main.py`.
+
+# Updating
+* Execute `git pull` in the directory with game files.
 
 # Internal structure
 
