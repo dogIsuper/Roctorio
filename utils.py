@@ -31,6 +31,16 @@ class SymbolDecorationsPathParser:
   def parse_to_globals(path, SIZE, px=0, py=0):
     yield from SymbolDecorationsPathParser.coords_to_globals(SymbolDecorationsPathParser.parse(path, px, py), SIZE)
 
+class TileCoordNormalizer:
+  def normalize(px, py):
+    return px, py
+  
+  def adjacent_decos(px, py): # not normalized
+    return ((px, py, i) for i in range(6))
+  
+  def adjacent_mechs(px, py): # not normalized
+    return ((px, py, i) for i in range(6))
+
 class DecorCoordNormalizer:
   def normalize(px, py, side):
     if side < 3:
@@ -42,6 +52,14 @@ class DecorCoordNormalizer:
       return px - 1, py + 1, 1
     if side == 5:
       return px, py + 1, 2
+  
+  def adjacent_tiles(px, py, side):
+    delta = ((1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1), (0, 1))
+    
+    return (px, py), (px + delta[side][0], py + delta[side][1])
+  
+  def adjacent_mechs(px, py, side): # not normalized
+    return (px, py, side), (px, py, (side + 1) % 6)
 
 class MechCoordNormalizer:
   def normalize(px, py, side):
@@ -56,3 +74,19 @@ class MechCoordNormalizer:
     
     if side == 5:
       return px - 1, py + 1, 1
+  
+  def adjacent_tiles(px, py, side):
+    px, py, side = MechCoordNormalizer.normalize(px, py, side)
+    
+    if side == 0:
+      return (px, py), (px + 1, py), (px, py + 1)
+    else:
+      return (px, py), (px + 1, py), (px + 1, py - 1)
+  
+  def adjacent_decos(px, py, side): # normalized
+    px, py, side = MechCoordNormalizer.normalize(px, py, side)
+    
+    if side == 0:
+      return (px, py, 0), (px, py + 1, 2), (px, py + 1, 1)
+    else:
+      return (px, py, 0), (px, py, 1), (px + 1, py, 2)

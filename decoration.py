@@ -25,3 +25,11 @@ class Decoration(IDecoration):
       self.widget.px, self.widget.py = self.pos
       self.widget.side = self.side
       self.canvas.add_widget(self.widget)
+  
+  @NoExcept
+  def adjacent_tiles(self):
+    return DecorCoordNormalizer.adjacent_tiles(*self.pos, self.side)
+  
+  @NoExcept
+  def adjacent_mechs(self):
+    return DecorCoordNormalizer.adjacent_mechs(*self.pos, self.side)

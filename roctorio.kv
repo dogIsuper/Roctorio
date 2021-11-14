@@ -24,6 +24,7 @@
   font_size:            16
 
 <ColouredFloatLayout@ColouredWidget+FloatLayout>:
+<ColouredGridLayout@ColouredWidget+GridLayout>:
 
 ### position utils ###
 <HexPositionable@Widget>:
@@ -58,6 +59,41 @@
       size:             self.size
       source:           self.tx_source
 
+<Resource@Widget>:
+  size_hint:            None, None
+  size:                 24, 24
+  
+  q:                    0
+  
+  canvas.before:
+    Color:
+      rgba:             0.2, 0.2, self.q / 64, 1
+    
+    Ellipse:
+      segments:         10
+      pos:              self.pos
+      size:             self.size
+  
+  Label:
+    text:               str(root.q)
+    pos:                root.pos
+    text_size:          root.size
+    size:               root.size
+    halign:             'center'
+    valign:             'center'
+
+<Inventory@ColouredGridLayout>:
+  rows:                 1
+  backcolor:            1.0, 1.0, 1.0, 0.6
+  host:                 None
+  
+  size_hint:            None, None
+  size:                 self.minimum_width, self.minimum_height
+  pos:                  (self.host.right, self.host.top) if self.host else (0, 0)
+  
+  padding:              4, 4
+  spacing:              4, 4
+  
 ### drawing utils end ###
 
 <Hex@HexPositionable+HexagonDrawer>:

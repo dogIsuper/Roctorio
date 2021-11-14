@@ -34,6 +34,8 @@ class GameObject(IGameObject):
     self.world = GridWorld(app.root.ids.playground)
     self.app = app
     
+    self.init_world()
+    
     self.tps = TpsMeter()
     self.tps.start()
   
@@ -43,7 +45,16 @@ class GameObject(IGameObject):
     print('[LOG %s] %s' % (time.strftime('%d-%m-%Y %H:%M:%S'), message))
   
   @NoExcept
+  def init_world(self):
+    for deco in self.world.decorations:
+      for (px, py) in deco.adjacent_tiles():
+        self.world.get_block(px, py).tx_source = 'assets\\tiles\\light-grass-256-b.png'
+  
+  @NoExcept
   def step(self):
     self.app.tps = self.tps.get_tps()
+    
+    for mech in self.world.mechanisms:
+      mech.step()
     
     self.world.draw()
