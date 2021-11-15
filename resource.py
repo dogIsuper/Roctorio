@@ -12,6 +12,7 @@ class IResourceStack(DisallowInterfaceInstantiation):
   def merge(self, other):     pass # returns merged stack and any remaining resources
   def split(self, size):      pass # returns stack with up to SIZE resources and other stack with remaining resources
   def draw(self, inv_widget): pass
+  def undraw(self, inv_widget): pass
 
 class ResourceStack(IResourceStack):
   name = 'resource'
@@ -45,3 +46,8 @@ class ResourceStack(IResourceStack):
       self.widget.parent.remove_widget(self.widget)
     
     inv_widget.add_widget(self.widget)
+  
+  @NoExcept
+  def undraw(self, inv_widget):
+    if self.widget:
+      inv_widget.remove_widget(self.widget)

@@ -17,12 +17,12 @@ class Inventory(IInventory):
     self.host = host
   
   def extract_stack(self, i):
-    stack = self.stacks[i]
-    
-    self.widget.remove_widget(stack.widget)
-    return stack
+    return self.stacks[i]
   
   def put_stack(self, i, stack):
+    old_stack = self.stacks[i]
+    old_stack.undraw(self.widget)
+    
     self.stacks[i] = stack
   
   @NoExcept
