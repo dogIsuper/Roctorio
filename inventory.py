@@ -26,6 +26,15 @@ class Inventory(IInventory):
       old_stack.undraw(self.widget)
       self.stacks[i] = stack
   
+  def push(self, stack):
+    for i in range(len(self.stacks)):
+      if stack.size == 0: break
+      
+      slot, stack = self.extract_stack(i).merge(stack)
+      self.put_stack(i, slot)
+    
+    return stack
+  
   @NoExcept
   def draw(self):
     if not self.widget and self.host:

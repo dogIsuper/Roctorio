@@ -1,4 +1,4 @@
-from utils import DisallowInterfaceInstantiation, DecorCoordNormalizer
+from utils import DisallowInterfaceInstantiation, DecorCoordNormalizer, MechCoordNormalizer
 from invariants import NoExcept
 
 from decoration import Decoration
@@ -14,11 +14,11 @@ class GridWorld(IWorld):
   def __init__(self, playground):
     IWorld.__init__(self, playground)
     
-    self.blocks = [[Block(playground, j, i) for j in range(8)] for i in range(8)]
-    self.decorations = [Decoration(playground, 3, 3, i) for i in range(0, 6, 2)]
-    self.mechanisms = [Mechanism(playground, 1, 1, j) for j in range(6)]
+    self.canvas = playground
     
-    self.playground = playground
+    self.blocks = [[Block(self, j, i) for j in range(8)] for i in range(8)]
+    self.mechanisms = [Mechanism(self, 1, 1, j) for j in range(6)]
+    self.decorations = [Decoration(self, 1, i // 2 + 1, i % 2) for i in range(1, 8)]
     
     self.draw()
   
@@ -40,6 +40,26 @@ class GridWorld(IWorld):
       return self.blocks[y][x]
     except IndexError:
       return Block(self.playground, x, y) # caller shall not use .draw method on the returned block
+  
+  @NoExcept
+  def get_deco(self, px, py, side):
+    px, py, side = DecorCoordNormalizer.normalize(px, py, side)
+    
+    for deco in self.decorations:
+      if deco.pos == (px, py) and deco.side == side:
+        return deco
+    
+    return None
+  
+  @NoExcept
+  def get_mech(self, px, py, side):
+    px, py, side = MechCoordNormalizer.normalize(px, py, side)
+    
+    for mech in self.mechanisms:
+      if mech.pos == (px, py) and mech.side == side:
+        return mech
+    
+    return None
   
   @NoExcept
   def draw(self):

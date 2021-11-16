@@ -13,9 +13,9 @@ class Block(IBlock):
   tx_source = 'assets\\tiles\\grass-256-b.png'
   
   @NoExcept
-  def __init__(self, canvas, px, py):
+  def __init__(self, world, px, py):
     self.pos = px, py
-    self.canvas = canvas
+    self.canvas = world.canvas
     self.widget = None
   
   @NoExcept

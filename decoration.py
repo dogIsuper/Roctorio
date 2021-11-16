@@ -1,6 +1,7 @@
 from kivy.factory import Factory
 
 from utils import DisallowInterfaceInstantiation, DecorCoordNormalizer
+from resource import ResourceStack
 from invariants import NoExcept
 from inventory import Inventory
 
@@ -9,17 +10,22 @@ class IDecoration(DisallowInterfaceInstantiation):
   
   def __init__(self, canvas, px, py, side): pass
   def draw(self): pass
+  def step(self): pass
+  
+  def adjacent_tiles(self): pass
+  def adjacent_mechs(self): pass
 
 class Decoration(IDecoration):
   tx_source = ''
   
   @NoExcept
-  def __init__(self, canvas, px, py, side):
+  def __init__(self, world, px, py, side):
     *self.pos, self.side = DecorCoordNormalizer.normalize(px, py, side)
     
-    self.inventory = Inventory(canvas, self, 3)
+    self.inventory = Inventory(world.canvas, self, 2)
     
-    self.canvas = canvas
+    self.world = world
+    self.canvas = world.canvas
     self.widget = None
   
   @NoExcept
@@ -31,6 +37,10 @@ class Decoration(IDecoration):
       self.canvas.add_widget(self.widget)
     
     self.inventory.draw()
+  
+  @NoExcept
+  def step(self):
+    pass
   
   @NoExcept
   def adjacent_tiles(self):

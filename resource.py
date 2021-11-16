@@ -46,10 +46,11 @@ class ResourceStack(IResourceStack):
       self.widget.q = self.size
       self.widget.id = self.name
     
-    if self.widget.parent:
+    if self.widget.parent not in (None, inv_widget):
       self.widget.parent.remove_widget(self.widget)
     
-    inv_widget.add_widget(self.widget)
+    if self.widget.parent != inv_widget:
+      inv_widget.add_widget(self.widget)
   
   @NoExcept
   def undraw(self, inv_widget):

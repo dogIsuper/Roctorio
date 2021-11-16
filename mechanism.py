@@ -11,17 +11,21 @@ class IMechanism(DisallowInterfaceInstantiation):
   def __init__(self, canvas, px, py, side): pass
   def step(self): pass
   def draw(self): pass
+  
+  def adjacent_tiles(self): pass
+  def adjacent_decos(self): pass
 
 class Mechanism(IMechanism):
   tx_source = ''
   
   @NoExcept
-  def __init__(self, canvas, hex_px, hex_py, side):
+  def __init__(self, world, hex_px, hex_py, side):
     *self.pos, self.side = MechCoordNormalizer.normalize(hex_px, hex_py, side)
     
-    self.inventory = Inventory(canvas, self, 2)
+    self.inventory = Inventory(world.canvas, self, 1)
     
-    self.canvas = canvas
+    self.world = world
+    self.canvas = world.canvas
     self.widget = None
   
   @NoExcept
@@ -36,11 +40,7 @@ class Mechanism(IMechanism):
   
   @NoExcept
   def step(self):
-    old_water = self.inventory.extract_stack(0)
-    new_water = ResourceStack(1)
-    
-    sum_water, _ = ResourceStack.merge(old_water, new_water)
-    self.inventory.put_stack(0, sum_water)
+    self.inventory.push(ResourceStack(1))
   
   @NoExcept
   def adjacent_tiles(self):
