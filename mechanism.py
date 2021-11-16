@@ -19,7 +19,7 @@ class Mechanism(IMechanism):
   def __init__(self, canvas, hex_px, hex_py, side):
     *self.pos, self.side = MechCoordNormalizer.normalize(hex_px, hex_py, side)
     
-    self.inventory = Inventory(canvas, self, 1)
+    self.inventory = Inventory(canvas, self, 2)
     
     self.canvas = canvas
     self.widget = None

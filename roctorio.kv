@@ -2,6 +2,11 @@
 # UNIT = 40: 1920x1080 -> 48x27
 # UNIT = 60: 1920x1080 -> 32x18
 
+#:import SIN math.sin
+#:import COS math.cos
+#:import pi math.pi
+
+#:set d60 -pi / 3
 
 #:set SIZE 128
 #:set OFFSET_X SIZE * 1 / 4 * (3 ** 0.5)
@@ -61,26 +66,29 @@
 
 <Resource@Widget>:
   size_hint:            None, None
-  size:                 24, 24
+  size:                 28, 28
   
   q:                    0
   
   canvas.before:
     Color:
-      rgba:             0.2, 0.2, self.q / 64, 1
+      rgba:             0.2, 0.4, 1.0, bool(self.q)
     
     Ellipse:
-      segments:         10
+      segments:         5
       pos:              self.pos
       size:             self.size
   
   Label:
-    text:               str(root.q)
-    pos:                root.pos
+    text:               ('[b]%d[/b]' % root.q) if root.q else ''
+    color:              0.0, 0.0, 0.0, 1
+    markup:             True
+    
+    pos:                root.right - self.width + 4, root.y - 4
     text_size:          root.size
     size:               root.size
-    halign:             'center'
-    valign:             'center'
+    halign:             'right'
+    valign:             'bottom'
 
 <Inventory@ColouredGridLayout>:
   rows:                 1
@@ -89,7 +97,7 @@
   
   size_hint:            None, None
   size:                 self.minimum_width, self.minimum_height
-  pos:                  (self.host.right, self.host.top) if self.host else (0, 0)
+  pos:                  self.host.host_pos if self.host else (0, 0)
   
   padding:              4, 4
   spacing:              4, 4
@@ -108,6 +116,10 @@
   size_hint:            None, None
   width:                16
   height:               SIZE / 2 + self.dec_offset * 2
+  
+  host_x:               self.x + OFFSET_X + 8 + COS(d60 * self.side) * (OFFSET_X - 8) + 20
+  host_y:               self.y + SIZE / 2 + SIN(d60 * self.side) * (SIZE / 2 - self.dec_offset) - 8
+  host_pos:             self.host_x, self.host_y
   
   canvas.after:
     Color:
@@ -128,6 +140,8 @@
 <Mechanism@MechanismDeltaCalc>:
   size_hint:            None, None
   size:                 16, 16
+  
+  host_pos:             self.right, self.top
   
   canvas.after:
     Color:
@@ -152,6 +166,11 @@
     size_hint:          None, None
     size:               UNIT * 3, UNIT
     pos_hint:           {'top': 1, 'left': 0}
+    
+    text_size:          self.size
+    valign:             'center'
+    halign:             'left'
+    padding:            20, 10
     
   InfiniteHexGrid:
     id:                 playground

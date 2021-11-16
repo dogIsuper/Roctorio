@@ -28,6 +28,10 @@ class ResourceStack(IResourceStack):
   @NoExcept
   def merge(self, other):
     size = min(self.size + other.size, self.limit)
+    
+    if self.size == self.limit:
+      return self, other
+    
     return ResourceStack(size), ResourceStack(self.size + other.size - size)
   
   @NoExcept

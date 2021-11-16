@@ -21,9 +21,10 @@ class Inventory(IInventory):
   
   def put_stack(self, i, stack):
     old_stack = self.stacks[i]
-    old_stack.undraw(self.widget)
     
-    self.stacks[i] = stack
+    if old_stack != stack:
+      old_stack.undraw(self.widget)
+      self.stacks[i] = stack
   
   @NoExcept
   def draw(self):
