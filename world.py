@@ -3,6 +3,7 @@ from invariants import NoExcept
 
 from decoration import Decoration
 from mechanism import Mechanism
+from entity import Entity
 from block import Block
 
 class IWorld(DisallowInterfaceInstantiation):
@@ -19,6 +20,9 @@ class GridWorld(IWorld):
     self.blocks = [[Block(self, j, i) for j in range(8)] for i in range(8)]
     self.mechanisms = [Mechanism(self, 1, 1, j) for j in range(6)]
     self.decorations = [Decoration(self, 1, i // 2 + 1, i % 2) for i in range(1, 8)]
+    
+    print(Entity.tx_source)
+    self.entities = [Entity(self, 3, 5)]
     
     self.draw()
   
@@ -72,3 +76,6 @@ class GridWorld(IWorld):
     
     for mechanism in self.mechanisms:
       mechanism.draw()
+    
+    for entity in self.entities:
+      entity.draw()

@@ -64,6 +64,22 @@
       size:             self.size
       source:           self.tx_source
 
+<EntityDrawer@Widget>:
+  tx_source:            'assets\\entities\\entity-256.png'
+  
+  size_hint:            None, None
+  size:                 SIZE, SIZE
+  
+  canvas.after:
+    Color:
+      rgba:             1.0, 1.0, 1.0, 1
+    
+    Ellipse:
+      segments:         6
+      pos:              self.pos
+      size:             self.size
+      source:           self.tx_source
+
 <Resource@Widget>:
   size_hint:            None, None
   size:                 28, 28
@@ -105,6 +121,7 @@
 ### drawing utils end ###
 
 <Hex@HexPositionable+HexagonDrawer>:
+<Entity@HexPositionable+EntityDrawer>:
 
 <Decoration@HexPositionable>:
   tx_source:            'assets\\decorations\\copper-pipe-16-76.png'
