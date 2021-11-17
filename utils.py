@@ -90,3 +90,20 @@ class MechCoordNormalizer:
       return (px, py, 0), (px, py + 1, 2), (px, py + 1, 1)
     else:
       return (px, py, 0), (px, py, 1), (px + 1, py, 2)
+
+def DivideFrequency(divisor, default=None):
+  def wrap(fn):
+    timer = 0
+    
+    def wrapper(*a, **k):
+      timer += 1
+      if timer % divisor: return default
+      
+      return fn(*a, **k)
+    
+    wrapper.__name__ = fn.__name__
+    wrapper.__qualname__ = fn.__qualname__
+    
+    return wrapper
+  
+  return wrap
