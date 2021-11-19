@@ -35,6 +35,17 @@ class Inventory(IInventory):
     
     return stack
   
+  def pop(self, max_size):
+    stack = ResourceStack(0)
+    
+    for i in range(len(self.stacks)):
+      stack, slot = self.extract_stack(i).split(1)
+      self.put_stack(i, slot)
+      
+      if stack.size: break
+    
+    return stack
+  
   @NoExcept
   def draw(self):
     if not self.widget and self.host:

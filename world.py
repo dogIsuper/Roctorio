@@ -19,7 +19,10 @@ class GridWorld(IWorld):
     
     self.blocks = [[Block(self, j, i) for j in range(8)] for i in range(8)]
     self.mechanisms = [Mechanism(self, 1, 1, j) for j in range(6)]
-    self.decorations = [Decoration(self, 1, i // 2 + 1, i % 2) for i in range(1, 8)]
+    # self.decorations = [Decoration(self, 1, i // 2 + 1, i % 2) for i in range(1, 8)]
+    self.decorations = [Decoration(self, 1, 2, 1)]
+    
+    # assert(self.get_mech(1, 2, 1))
     
     print(Entity.tx_source)
     self.entities = [Entity(self, 3, 5)]
@@ -50,7 +53,7 @@ class GridWorld(IWorld):
     px, py, side = DecorCoordNormalizer.normalize(px, py, side)
     
     for deco in self.decorations:
-      if deco.pos == (px, py) and deco.side == side:
+      if tuple(deco.pos) == (px, py) and deco.side == side:
         return deco
     
     return None
@@ -60,7 +63,7 @@ class GridWorld(IWorld):
     px, py, side = MechCoordNormalizer.normalize(px, py, side)
     
     for mech in self.mechanisms:
-      if mech.pos == (px, py) and mech.side == side:
+      if tuple(mech.pos) == (px, py) and mech.side == side:
         return mech
     
     return None

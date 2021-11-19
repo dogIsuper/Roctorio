@@ -36,7 +36,9 @@ class ResourceStack(IResourceStack):
   
   @NoExcept
   def split(self, size):
-    size = min(size, self.size)
+    if self.size <= size:
+      return self, ResourceStack(0)
+    
     return ResourceStack(size), ResourceStack(self.size - size)
   
   @NoExcept

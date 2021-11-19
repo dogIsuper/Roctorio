@@ -1,6 +1,6 @@
 from kivy.factory import Factory
 
-from utils import DisallowInterfaceInstantiation, DecorCoordNormalizer
+from utils import DisallowInterfaceInstantiation, DecorCoordNormalizer, DivideFrequency
 from resource import ResourceStack
 from invariants import NoExcept
 from inventory import Inventory
@@ -39,8 +39,36 @@ class Decoration(IDecoration):
     self.inventory.draw()
   
   @NoExcept
+  @DivideFrequency(100)
+  def log(self, mechs, cells):
+    print('Adjacent mechs:', mechs, cells)
+  
+  @NoExcept
   def step(self):
-    pass
+    # *mechs, = filter(None, [self.world.get_mech(px, py, side) for (px, py, side) in self.adjacent_mechs()])
+    *mechs, = [self.world.get_mech(px, py, side) for (px, py, side) in self.adjacent_mechs()]
+    self.log(mechs, self.adjacent_mechs())
+    
+    for i in range(1)[::-1]:
+      slot_a = self.inventory.extract_stack(i)
+      slot_b = self.inventory.extract_stack(i + 1)
+      
+      slot_b, slot_a = slot_b.merge(slot_a)
+      
+      self.inventory.put_stack(i, slot_a)
+      self.inventory.put_stack(i + 1, slot_b)
+    
+    for mech in mechs:
+      if not mech: continue
+      stack = mech.inventory.pop(1)
+      slot = self.inventory.extract_stack(0)
+      slot, stack = slot.merge(stack)
+      self.inventory.put_stack(0, slot)
+      mech.inventory.push(stack)
+      
+    # for mech in mechs:
+    #   slot = self.inventory.extract_stack(1)
+    #   self.inventory.put_stack(1, mech.inventory.push(slot))
   
   @NoExcept
   def adjacent_tiles(self):

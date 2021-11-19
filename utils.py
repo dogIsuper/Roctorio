@@ -96,6 +96,8 @@ def DivideFrequency(divisor, default=None):
     timer = 0
     
     def wrapper(*a, **k):
+      nonlocal timer
+      
       timer += 1
       if timer % divisor: return default
       
