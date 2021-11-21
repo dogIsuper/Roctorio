@@ -43,6 +43,10 @@ class Mechanism(IMechanism):
     self.inventory.push(ResourceStack(1))
   
   @NoExcept
+  def pop_stack(self, size):
+    return self.inventory.pop(size)
+  
+  @NoExcept
   def adjacent_tiles(self):
     return MechCoordNormalizer.adjacent_tiles(*self.pos, self.side)
   

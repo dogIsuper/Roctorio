@@ -19,8 +19,8 @@ class GridWorld(IWorld):
     
     self.blocks = [[Block(self, j, i) for j in range(8)] for i in range(8)]
     self.mechanisms = [Mechanism(self, 1, 1, j) for j in range(6)]
-    # self.decorations = [Decoration(self, 1, i // 2 + 1, i % 2) for i in range(1, 8)]
-    self.decorations = [Decoration(self, 1, 2, 1)]
+    self.decorations = [Decoration(self, 1, i // 2 + 1, i % 2) for i in range(1, 8)]
+    # self.decorations = [Decoration(self, 1, 2, 1)]
     
     # assert(self.get_mech(1, 2, 1))
     

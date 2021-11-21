@@ -91,6 +91,18 @@ class MechCoordNormalizer:
     else:
       return (px, py, 0), (px, py, 1), (px + 1, py, 2)
 
+class IDecorationPuller(DisallowInterfaceInstantiation):
+  def __init__(self, world, px, py, side): pass
+  def pull_item(self):                     pass
+  def push_item(self):                     pass
+  
+  def adjacent_decos(self):                pass
+  def adjacent_mechs(self):                pass
+  def get_variants(self):                  pass
+  def sort_variants(self, variants):       pass
+
+class DecorationPuller(IDecorationPuller): pass
+
 def DivideFrequency(divisor, default=None):
   def wrap(fn):
     timer = 0
