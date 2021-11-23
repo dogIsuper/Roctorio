@@ -40,6 +40,14 @@
   
   pos:                  (self.px * 2 + self.py) * OFFSET_X + self.dx, (self.py) * OFFSET_Y + self.dy
 
+<EntHPPositionable@Widget>:
+  px:                   0
+  py:                   0
+  dx:                   0
+  dy:                   0
+  
+  pos:                  (self.px * 2 + self.py) * OFFSET_X + self.dx, (self.py) * OFFSET_Y + self.dy   
+
 <MechanismDeltaCalc@HexPositionable>:
   side:                 0
   dx:                   (OFFSET_X + SIZE / 2 if self.side in [0, 1] else (OFFSET_X / 2 + SIZE / 4 if self.side in [2, 5] else 0)) - 8
@@ -76,6 +84,22 @@
     
     Ellipse:
       segments:         6
+      pos:              self.pos
+      size:             self.size
+      source:           self.tx_source
+
+<EntHPDrawer@Widget>:
+  tx_source:            'assets\\entities\\entity-HP-Bar-256.png'
+  
+  size_hint:            None, None
+  size:                 SIZE, SIZE
+  
+  canvas.after:
+    Color:
+      rgba:             1.0, 1.0, 1.0, 1
+    
+    Ellipse:
+      segments:         4
       pos:              self.pos
       size:             self.size
       source:           self.tx_source
@@ -122,6 +146,7 @@
 
 <Hex@HexPositionable+HexagonDrawer>:
 <Entity@HexPositionable+EntityDrawer>:
+<EntHP@EntHPPositionable+EntHPDrawer>:
 
 <Decoration@HexPositionable>:
   tx_source:            'assets\\decorations\\copper-pipe-16-76.png'

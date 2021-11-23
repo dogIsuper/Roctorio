@@ -64,4 +64,8 @@ class GameObject(IGameObject):
     for deco in self.world.decorations:
       deco.step()
     
+    for entity in self.world.entities:
+      entity.step()
+      
+    
     self.world.draw()
