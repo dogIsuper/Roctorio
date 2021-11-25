@@ -9,6 +9,10 @@ from block import Block
 class IWorld(DisallowInterfaceInstantiation):
   def __init__(self, playground): pass
   def draw(self):                 pass
+  def get_block(self, x, y):      pass
+  def has_block(self, x, y):      pass
+  def get_deco(self, x, y, side): pass
+  def get_mech(self, x, y, side): pass
 
 class GridWorld(IWorld):
   @NoExcept
@@ -46,7 +50,11 @@ class GridWorld(IWorld):
     try:
       return self.blocks[y][x]
     except IndexError:
-      return Block(self.playground, x, y) # caller shall not use .draw method on the returned block
+      return Block(self.canvas, x, y) # caller shall not use .draw method on the returned block
+  
+  @NoExcept
+  def has_block(self, x, y):
+    return (0 <= y < len(self.blocks)) and (0 <= x < len(self.blocks[y]))
   
   @NoExcept
   def get_deco(self, px, py, side):

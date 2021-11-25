@@ -103,6 +103,8 @@ class IDecorationPuller(DisallowInterfaceInstantiation):
 
 class DecorationPuller(IDecorationPuller): pass
 
+directions = ((1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1))
+
 def DivideFrequency(divisor, default=None):
   def wrap(fn):
     timer = 0

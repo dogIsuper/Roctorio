@@ -1,7 +1,10 @@
 from kivy.factory import Factory
 
-from utils import DisallowInterfaceInstantiation
+from utils import DisallowInterfaceInstantiation, DivideFrequency
 from invariants import NoExcept
+from utils import directions
+
+import random
 
 class IEntity(DisallowInterfaceInstantiation):
   tx_source = ''
@@ -15,6 +18,7 @@ class Entity(IEntity):
   @NoExcept
   def __init__(self, world, px, py):
     self.pos = px, py
+    self.world = world
     self.canvas = world.canvas
     self.widget = None
 
@@ -26,33 +30,21 @@ class Entity(IEntity):
       self.canvas.add_widget(self.widget)
 
   @NoExcept
+  @DivideFrequency(20)
   def step(self):
-    import random
+    px, py = self.pos
+    dx, dy = directions[random.randrange(0, 6)]
+    nx, ny = px + dx, py + dy
     
-    x=random.randrange(1, 8)
-    
-    px,py = self.pos
-    
-    if x == 1 and 8 > px - 1 >= 0 and 0 <= py + 1 < 8:
-      self.pos = (px - 1, py + 1)
-    elif x == 2 and 0 <= py + 1 < 8:
-      self.pos = (px, py + 1)
-    elif x == 3 and 8 > px + 1 >= 0:
-      self.pos = (px + 1, py)
-    elif x == 4 and 8 > px + 1 >= 0 and 0 <= py - 1 < 8:
-      self.pos = (px + 1, py - 1)
-    elif x == 5 and 0 <= py - 1 < 8:
-      self.pos = (px, py - 1)
-    elif x == 6 and 8 > px - 1 >= 0:
-      self.pos = (px - 1, py)
-      
-    self.widget.px, self.widget.py = self.pos
+    if self.world.has_block(nx, ny):
+      self.pos = nx, ny
+      self.widget.px, self.widget.py = nx, ny
+
 class IEntityHP(DisallowInterfaceInstantiation):
   def init(self, world, px, py): pass
   def draw(self):                pass
   
 class EntityHP(IEntityHP):
-
   @NoExcept
   def __init__(self, world, px, py):
     self.pos = px, py
