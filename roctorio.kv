@@ -50,8 +50,8 @@
 
 <MechanismDeltaCalc@HexPositionable>:
   side:                 0
-  dx:                   (OFFSET_X + SIZE / 2 if self.side in [0, 1] else (OFFSET_X / 2 + SIZE / 4 if self.side in [2, 5] else 0)) - 8
-  dy:                   (OFFSET_Y if self.side in [0, 4] else (SIZE / 4 if self.side in [1, 3] else (SIZE if self.side == 5 else 0))) - 8
+  dx:                   (OFFSET_X + SIZE / 2 if self.side in [0, 1] else (OFFSET_X / 2 + SIZE / 4 if self.side in [2, 5] else 0)) - self.width / 2
+  dy:                   (OFFSET_Y if self.side in [0, 4] else (SIZE / 4 if self.side in [1, 3] else (SIZE if self.side == 5 else 0))) - self.height / 2
 
 ### position utils end ###
 
@@ -180,8 +180,10 @@
     PopMatrix
 
 <Mechanism@MechanismDeltaCalc>:
+  tx_source:            'assets\\mechanisms\\pump-256.png'
+  
   size_hint:            None, None
-  size:                 16, 16
+  size:                 SIZE / 3, SIZE / 3
   
   host_pos:             self.right, self.top
   
@@ -189,10 +191,10 @@
     Color:
       rgba:             1, 1, 0, 1
     
-    Ellipse:
+    Rectangle:
       pos:              self.pos
       size:             self.size
-      
+      source:           self.tx_source
 
 <InfiniteHexGrid@FloatLayout>:
 

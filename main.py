@@ -5,7 +5,7 @@
 # (c) 2021, ProgramCrafter, dogIsuper, KarmaNT, SmartMushroom
 
 from kivy.config import Config
-Config.set('graphics', 'maxfps', 50)
+Config.set('graphics', 'maxfps', 100)
 
 from kivy.factory import Factory
 from kivy.clock import Clock
