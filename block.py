@@ -3,22 +3,22 @@ from kivy.factory import Factory
 from utils import DisallowInterfaceInstantiation
 from invariants import NoExcept
 
+BlocksEnum = {}
+
 class IBlock(DisallowInterfaceInstantiation):
   tx_source = ''
+  tags = ''
   
   def __init__(self, canvas, px, py): pass
   def draw(self):                     pass
   def has_tag(self, tag):             pass
 
 class Block(IBlock):
-  tx_source = 'assets\\tiles\\grass-256-b.png'
-  
   @NoExcept
   def __init__(self, world, px, py):
     self.pos = px, py
     self.canvas = world.canvas
     self.widget = None
-    self.tags = ''
   
   @NoExcept
   def draw(self):
@@ -32,3 +32,10 @@ class Block(IBlock):
   @NoExcept
   def has_tag(self, tag):
     return tag.lower() in self.tags.split(':')
+
+@NoExcept
+def RegisterType(id, callbacks): # on_init, on_step, on_interact
+  return BlocksEnum.setdefault(id, type(id, (Block,), callbacks))
+
+def GetType(id):
+  return BlocksEnum[id]

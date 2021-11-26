@@ -4,11 +4,12 @@ from invariants import NoExcept
 # the following lines will register decoration types and behaviours
 import content.decorations
 import content.mechanisms
+import content.blocks
 
 from entity import Entity
-from block import Block
 import decoration
 import mechanism
+import block
 
 class IWorld(DisallowInterfaceInstantiation):
   def __init__(self, playground): pass
@@ -31,7 +32,9 @@ class GridWorld(IWorld):
     Pump = mechanism.GetType('roctorio:mechanism:pump:')
     Barrel = mechanism.GetType('roctorio:mechanism:barrel:')
     
-    self.blocks = [[Block(self, j, i) for j in range(8)] for i in range(8)]
+    Grass = block.GetType('roctorio:block:grass:')
+    
+    self.blocks = [[Grass(self, j, i) for j in range(8)] for i in range(8)]
     self.mechanisms = [Barrel(self, 1, 1, j) for j in range(1, 6)]
     self.decorations = [Pipe(self, 1, i // 2 + 1, i % 2) for i in range(1, 8)]
     # self.decorations = [Decoration(self, 1, 2, 1)]
