@@ -28,7 +28,7 @@ class Decoration(IDecoration):
   def __init__(self, world, px, py, side):
     *self.pos, self.side = DecorCoordNormalizer.normalize(px, py, side)
     
-    self.inventory = Inventory(world.canvas, self, 2)
+    self.inventory = None
     
     self.world = world
     self.canvas = world.canvas
@@ -47,7 +47,7 @@ class Decoration(IDecoration):
       self.canvas.add_widget(self.widget)
     
     self.widget.tx_source = self.tx_source
-    self.inventory.draw()
+    if self.inventory: self.inventory.draw()
   
   @NoExcept
   @DivideFrequency(100)
@@ -56,19 +56,6 @@ class Decoration(IDecoration):
   
   @NoExcept
   def step(self):
-    # *mechs, = filter(None, [self.world.get_mech(px, py, side) for (px, py, side) in self.adjacent_mechs()])
-    
-    for i in range(1)[::-1]:
-      slot_a = self.inventory.extract_stack(i)
-      slot_b = self.inventory.extract_stack(i + 1)
-      
-      slot_b, slot_a = slot_b.merge(slot_a)
-      
-      self.inventory.put_stack(i, slot_a)
-      self.inventory.put_stack(i + 1, slot_b)
-    
-    self.puller.pull_item()
-    
     if self.on_step: self.on_step()
   
   @NoExcept
