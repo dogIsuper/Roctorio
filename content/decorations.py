@@ -13,7 +13,7 @@ RegisterType('roctorio:decoration:water:', {'on_init': river_init})
 def pipe_init(self):
   self.tx_source = 'assets\\decorations\\copper-pipe-32-132.png'
   self.inventory = Inventory(self.world.canvas, self, 2)
-  self.move_direction = 0
+  self.move_direction = 1
 
 def pipe_step(self):
   # pulling items

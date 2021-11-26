@@ -32,12 +32,12 @@ class GridWorld(IWorld):
     Barrel = mechanism.GetType('roctorio:mechanism:barrel:')
     
     self.blocks = [[Block(self, j, i) for j in range(8)] for i in range(8)]
-    self.mechanisms = [Barrel(self, 1, 1, j) for j in range(5)]
-    self.decorations = [River(self, 1, i // 2 + 1, i % 2) for i in range(1, 8)]
+    self.mechanisms = [Barrel(self, 1, 1, j) for j in range(1, 6)]
+    self.decorations = [Pipe(self, 1, i // 2 + 1, i % 2) for i in range(1, 8)]
     # self.decorations = [Decoration(self, 1, 2, 1)]
     
-    self.mechanisms.append(Pump(self, 1, 1, 5))
-    self.decorations.append(Pipe(self, 1, 1, 4))
+    self.mechanisms.append(Pump(self, 1, 1, 0))
+    self.decorations.append(River(self, 1, 1, 5))
     
     # assert(self.get_mech(1, 2, 1))
     
