@@ -53,5 +53,9 @@ class Inventory(IInventory):
       self.widget.host = self.host.widget
       self.canvas.add_widget(self.widget)
     
+    sum_size = 0
     for stack in self.stacks:
       stack.draw(self.widget)
+      sum_size += stack.size
+    
+    self.widget.opacity = 0.3 if sum_size == 0 else 1
