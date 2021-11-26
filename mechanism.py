@@ -55,6 +55,10 @@ class Mechanism(IMechanism):
     return self.inventory.pop(size)
   
   @NoExcept
+  def push_stack(self, stack):
+    return self.inventory.push(stack)
+  
+  @NoExcept
   def adjacent_tiles(self):
     return MechCoordNormalizer.adjacent_tiles(*self.pos, self.side)
   

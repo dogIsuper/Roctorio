@@ -1,7 +1,7 @@
 from kivy.factory import Factory
 
-from utils import DecorCoordNormalizer, MechCoordNormalizer, DecorationPuller
 from utils import DisallowInterfaceInstantiation, DivideFrequency
+from utils import DecorCoordNormalizer, MechCoordNormalizer
 from resource import ResourceStack
 from invariants import NoExcept
 from inventory import Inventory
@@ -34,8 +34,6 @@ class Decoration(IDecoration):
     self.canvas = world.canvas
     self.widget = None
     
-    self.puller = DecorationPuller(world, *self.pos, self.side)
-    
     if self.on_init: self.on_init()
   
   @NoExcept
@@ -60,11 +58,11 @@ class Decoration(IDecoration):
   
   @NoExcept
   def pop_stack(self, size):
-    slot = self.inventory.extract_stack(1)
-    slot, stack = slot.split(size)
-    self.inventory.put_stack(1, slot)
-    
-    return stack
+    return self.inventory.pop(size)
+  
+  @NoExcept
+  def push_stack(self, stack):
+    return self.inventory.push(stack)
   
   @NoExcept
   def adjacent_tiles(self):
