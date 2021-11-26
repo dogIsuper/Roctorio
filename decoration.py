@@ -1,13 +1,18 @@
 from kivy.factory import Factory
 
-from utils import DisallowInterfaceInstantiation, DivideFrequency
 from utils import DecorCoordNormalizer, MechCoordNormalizer, DecorationPuller
+from utils import DisallowInterfaceInstantiation, DivideFrequency
 from resource import ResourceStack
 from invariants import NoExcept
 from inventory import Inventory
 
+DecorationsEnum = {}
+
 class IDecoration(DisallowInterfaceInstantiation):
   tx_source = ''
+  on_init = None
+  on_step = None
+  on_interact = None
   
   def __init__(self, canvas, px, py, side): pass
   def draw(self): pass
@@ -30,6 +35,8 @@ class Decoration(IDecoration):
     self.widget = None
     
     self.puller = DecorationPuller(world, *self.pos, self.side)
+    
+    if self.on_init: self.on_init()
   
   @NoExcept
   def draw(self):
@@ -39,6 +46,7 @@ class Decoration(IDecoration):
       self.widget.side = self.side
       self.canvas.add_widget(self.widget)
     
+    self.widget.tx_source = self.tx_source
     self.inventory.draw()
   
   @NoExcept
@@ -60,6 +68,8 @@ class Decoration(IDecoration):
       self.inventory.put_stack(i + 1, slot_b)
     
     self.puller.pull_item()
+    
+    if self.on_step: self.on_step()
   
   @NoExcept
   def pop_stack(self, size):
@@ -76,3 +86,10 @@ class Decoration(IDecoration):
   @NoExcept
   def adjacent_mechs(self):
     return DecorCoordNormalizer.adjacent_mechs(*self.pos, self.side)
+
+@NoExcept
+def RegisterType(id, callbacks): # on_init, on_step, on_interact
+  return DecorationsEnum.setdefault(id, type(id, (Decoration,), callbacks))
+
+def GetType(id):
+  return DecorationsEnum[id]

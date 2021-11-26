@@ -16,7 +16,7 @@ class IMechanism(DisallowInterfaceInstantiation):
   def adjacent_decos(self): pass
 
 class Mechanism(IMechanism):
-  tx_source = ''
+  tx_source = 'assets\\mechanisms\\pump-256.png'
   
   @NoExcept
   def __init__(self, world, hex_px, hex_py, side):
@@ -34,6 +34,7 @@ class Mechanism(IMechanism):
       self.widget = Factory.Mechanism()
       self.widget.side = self.side
       self.widget.px, self.widget.py = self.pos
+      self.widget.tx_source = self.tx_source
       self.canvas.add_widget(self.widget)
     
     self.inventory.draw()
