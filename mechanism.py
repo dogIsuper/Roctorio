@@ -5,8 +5,13 @@ from resource import ResourceStack
 from invariants import NoExcept
 from inventory import Inventory
 
+MechanismsEnum = {}
+
 class IMechanism(DisallowInterfaceInstantiation):
   tx_source = ''
+  on_init = None
+  on_step = None
+  on_interact = None
   
   def __init__(self, canvas, px, py, side): pass
   def step(self): pass
@@ -27,6 +32,8 @@ class Mechanism(IMechanism):
     self.world = world
     self.canvas = world.canvas
     self.widget = None
+    
+    if self.on_init: self.on_init()
   
   @NoExcept
   def draw(self):
@@ -34,14 +41,14 @@ class Mechanism(IMechanism):
       self.widget = Factory.Mechanism()
       self.widget.side = self.side
       self.widget.px, self.widget.py = self.pos
-      self.widget.tx_source = self.tx_source
       self.canvas.add_widget(self.widget)
     
-    self.inventory.draw()
+    self.widget.tx_source = self.tx_source
+    if self.inventory: self.inventory.draw()
   
   @NoExcept
   def step(self):
-    self.inventory.push(ResourceStack(1))
+    if self.on_step: self.on_step()
   
   @NoExcept
   def pop_stack(self, size):
@@ -54,3 +61,10 @@ class Mechanism(IMechanism):
   @NoExcept
   def adjacent_decos(self):
     return MechCoordNormalizer.adjacent_decos(*self.pos, self.side)
+
+@NoExcept
+def RegisterType(id, callbacks): # on_init, on_step, on_interact
+  return MechanismsEnum.setdefault(id, type(id, (Mechanism,), callbacks))
+
+def GetType(id):
+  return MechanismsEnum[id]
