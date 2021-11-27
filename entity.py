@@ -57,3 +57,21 @@ class EntityHP(IEntityHP):
       self.widget = Factory.EntHP()
       self.widget.px, self.widget.py = self.pos
       self.canvas.add_widget(self.widget)
+class EntityPlayer(IEntity):
+  tx_source = 'assets\\entities\\entity-256.png'
+
+  @NoExcept
+  def __init__(self, world, px, py):
+    self.pos = px, py
+    self.canvas = world.canvas
+    self.widget = None
+
+  @NoExcept
+  def draw(self):
+    if not self.widget:
+
+      self.widget = Factory.Entity()
+      self.widget.px, self.widget.py = self.pos
+      self.canvas.add_widget(self.widget)
+    else:
+      self.widget.px, self.widget.py = self.pos

@@ -1,5 +1,7 @@
 from utils import DisallowInterfaceInstantiation
 from invariants import NoExcept
+from kivy.uix.widget import Widget
+from kivy.core.window import Window
 from world import GridWorld
 
 import time
@@ -25,17 +27,40 @@ class IGameObject(DisallowInterfaceInstantiation):
   def log(self, message): pass
   def get_world(self):    pass
   def run_forever(self):  pass
-
+class EntityPlayerRun(Widget):
+  def __init__(self, wd):
+    self.widget = None
+  def keyPressed(self, keyboard, keycode, text, modifiers):
+    if keycode[1] == 'w' and self.widget.pos[0] > 0 and self.widget.pos[1] < 7:
+       self.widget.pos = [self.widget.pos[0] - 1, self.widget.pos[1] + 1]
+    if keycode[1] == 'e' and self.widget.pos[1] < 7:
+      self.widget.pos = [self.widget.pos[0], self.widget.pos[1] + 1]
+    if keycode[1] == 'd' and self.widget.pos[0] < 7:
+      self.widget.pos = [self.widget.pos[0] + 1, self.widget.pos[1]]
+    if keycode[1] == 'x' and self.widget.pos[0] < 7 and self.widget.pos[1] > 0:
+      self.widget.pos = [self.widget.pos[0] + 1, self.widget.pos[1] - 1]
+    if keycode[1] == 'z' and self.widget.pos[1] > 0:
+      self.widget.pos = [self.widget.pos[0], self.widget.pos[1] - 1]
+    if keycode[1] == 'a' and self.widget.pos[0] > 0:
+      self.widget.pos = [self.widget.pos[0] - 1, self.widget.pos[1]]
+    self.widget.draw()
 class GameObject(IGameObject):
   @NoExcept
   def __init__(self, app):
     IGameObject.__init__(self)
     
     self.world = GridWorld(app.root.ids.playground)
+    def CreateTest():
+      test = EntityPlayerRun(None)
+      TestKeyboard = Window.request_keyboard(None, test)
+      TestKeyboard.bind(on_key_down=test.keyPressed)
+      return test
+    test = CreateTest()
     self.app = app
     
     self.init_world()
-    
+    player = self.world.get_player()
+    test.widget = player
     self.tps = TpsMeter()
     self.tps.start()
   

@@ -6,7 +6,7 @@ import content.decorations
 import content.mechanisms
 import content.blocks
 
-from entity import Entity
+from entity import Entity, EntityPlayer
 import decoration
 import mechanism
 import block
@@ -46,6 +46,7 @@ class GridWorld(IWorld):
     
     print(Entity.tx_source)
     self.entities = [Entity(self, 3, 5)]
+    self.entitiplayer = [EntityPlayer(self, 3, 3)]
     
     self.draw()
   
@@ -106,3 +107,7 @@ class GridWorld(IWorld):
     
     for entity in self.entities:
       entity.draw()
+    for entity in self.entitiplayer:
+      entity.draw()
+  def get_player(self):
+    return self.entitiplayer[0]
