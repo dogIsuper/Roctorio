@@ -40,14 +40,6 @@
   
   pos:                  (self.px * 2 + self.py) * OFFSET_X + self.dx, (self.py) * OFFSET_Y + self.dy
 
-<EntHPPositionable@Widget>:
-  px:                   0
-  py:                   0
-  dx:                   0
-  dy:                   0
-  
-  pos:                  (self.px * 2 + self.py) * OFFSET_X + self.dx, (self.py) * OFFSET_Y + self.dy   
-
 <MechanismDeltaCalc@HexPositionable>:
   side:                 0
   dx:                   (OFFSET_X + SIZE / 2 if self.side in [0, 1] else (OFFSET_X / 2 + SIZE / 4 if self.side in [2, 5] else 0)) - self.width / 2
@@ -71,6 +63,12 @@
       pos:              self.pos
       size:             self.size
       source:           self.tx_source
+    
+    Color:
+      rgba:             1.0, 0.0, 0.0, 0.8
+    
+    Line:
+      rectangle:        self.x, self.y, self.width, self.height
 
 <EntityDrawer@Widget>:
   tx_source:            'assets\\entities\\entity-256.png'
@@ -88,21 +86,19 @@
       size:             self.size
       source:           self.tx_source
 
-<EntHPDrawer@Widget>:
-  tx_source:            'assets\\entities\\entity-HP-Bar-256.png'
-  
+<EntHP@HexPositionable>:
   size_hint:            None, None
-  size:                 SIZE, SIZE
+  size:                 80, 15
+  
+  dx:                   SIZE / 2 - self.width / 2
   
   canvas.after:
     Color:
-      rgba:             1.0, 1.0, 1.0, 1
+      rgba:             0.0, 1.0, 0.0, 1
     
-    Ellipse:
-      segments:         4
+    Rectangle:
       pos:              self.pos
       size:             self.size
-      source:           self.tx_source
 
 <Resource@Widget>:
   size_hint:            None, None
@@ -146,7 +142,6 @@
 
 <Hex@HexPositionable+HexagonDrawer>:
 <Entity@HexPositionable+EntityDrawer>:
-<EntHP@EntHPPositionable+EntHPDrawer>:
 
 <Decoration@HexPositionable>:
   tx_source:            'assets\\decorations\\copper-pipe-16-76.png'

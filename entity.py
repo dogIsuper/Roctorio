@@ -2,6 +2,7 @@ from kivy.factory import Factory
 
 from utils import DisallowInterfaceInstantiation, DivideFrequency
 from invariants import NoExcept
+from inventory import Inventory
 from utils import directions
 
 import random
@@ -21,7 +22,11 @@ class Entity(IEntity):
     self.pos = px, py
     self.world = world
     self.canvas = world.canvas
+    
     self.widget = None
+    self.hp_bar = EntityHP(world, px, py)
+    
+    self.inventory = Inventory(world.canvas, self, 9)
 
   @NoExcept
   def draw(self):
@@ -30,6 +35,8 @@ class Entity(IEntity):
       self.canvas.add_widget(self.widget)
       
     self.widget.px, self.widget.py = self.pos
+    self.hp_bar.pos = self.pos
+    self.hp_bar.draw()
 
   @NoExcept
   @DivideFrequency(20)
@@ -71,5 +78,6 @@ class EntityHP(IEntityHP):
   def draw(self):
     if not self.widget:
       self.widget = Factory.EntHP()
-      self.widget.px, self.widget.py = self.pos
       self.canvas.add_widget(self.widget)
+    
+    self.widget.px, self.widget.py = self.pos

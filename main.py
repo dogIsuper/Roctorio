@@ -6,6 +6,8 @@
 
 from kivy.config import Config
 Config.set('graphics', 'maxfps', 100)
+Config.set('graphics', 'width', 1600)
+Config.set('graphics', 'height', 1024)
 
 from kivy.factory import Factory
 from kivy.clock import Clock
