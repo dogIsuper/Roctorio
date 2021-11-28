@@ -23,13 +23,10 @@ class TpsMeter(ITpsMeter):
     
     return tps
 
-class IGameObject(DisallowInterfaceInstantiation):
-  def log(self, message): pass
-  def get_world(self):    pass
-  def run_forever(self):  pass
 class EntityPlayerRun(Widget):
   def __init__(self, wd):
     self.widget = None
+  
   def keyPressed(self, keyboard, keycode, text, modifiers):
     if keycode[1] == 'w' and self.widget.pos[0] > 0 and self.widget.pos[1] < 7:
        self.widget.pos = [self.widget.pos[0] - 1, self.widget.pos[1] + 1]
@@ -44,6 +41,12 @@ class EntityPlayerRun(Widget):
     if keycode[1] == 'a' and self.widget.pos[0] > 0:
       self.widget.pos = [self.widget.pos[0] - 1, self.widget.pos[1]]
     self.widget.draw()
+
+class IGameObject(DisallowInterfaceInstantiation):
+  def log(self, message): pass
+  def get_world(self):    pass
+  def run_forever(self):  pass
+
 class GameObject(IGameObject):
   @NoExcept
   def __init__(self, app):

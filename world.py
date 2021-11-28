@@ -45,8 +45,7 @@ class GridWorld(IWorld):
     # assert(self.get_mech(1, 2, 1))
     
     print(Entity.tx_source)
-    self.entities = [Entity(self, 3, 5)]
-    self.entitiplayer = [EntityPlayer(self, 3, 3)]
+    self.entities = [Entity(self, 3, 5), EntityPlayer(self, 3, 3)]
     
     self.draw()
   
@@ -107,7 +106,11 @@ class GridWorld(IWorld):
     
     for entity in self.entities:
       entity.draw()
-    for entity in self.entitiplayer:
-      entity.draw()
+  
+  @NoExcept
   def get_player(self):
-    return self.entitiplayer[0]
+    for entity in self.entities:
+      if entity.local_controlled():
+        return entity
+    
+    return None

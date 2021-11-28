@@ -11,6 +11,7 @@ class IEntity(DisallowInterfaceInstantiation):
 
   def init(self, world, px, py): pass
   def draw(self):                pass
+  def local_controlled(self):    pass
 
 class Entity(IEntity):
   tx_source = 'assets\\entities\\entity-256.png'
@@ -26,8 +27,9 @@ class Entity(IEntity):
   def draw(self):
     if not self.widget:
       self.widget = Factory.Entity()
-      self.widget.px, self.widget.py = self.pos
       self.canvas.add_widget(self.widget)
+      
+    self.widget.px, self.widget.py = self.pos
 
   @NoExcept
   @DivideFrequency(20)
@@ -38,7 +40,21 @@ class Entity(IEntity):
     
     if self.world.has_block(nx, ny):
       self.pos = nx, ny
-      self.widget.px, self.widget.py = nx, ny
+  
+  @NoExcept
+  def local_controlled(self):
+    return False
+
+class EntityPlayer(Entity):
+  tx_source = 'assets\\entities\\entity-256.png'
+  
+  @NoExcept
+  def step(self):
+    pass
+
+  @NoExcept
+  def local_controlled(self):
+    return True
 
 class IEntityHP(DisallowInterfaceInstantiation):
   def init(self, world, px, py): pass
@@ -57,21 +73,3 @@ class EntityHP(IEntityHP):
       self.widget = Factory.EntHP()
       self.widget.px, self.widget.py = self.pos
       self.canvas.add_widget(self.widget)
-class EntityPlayer(IEntity):
-  tx_source = 'assets\\entities\\entity-256.png'
-
-  @NoExcept
-  def __init__(self, world, px, py):
-    self.pos = px, py
-    self.canvas = world.canvas
-    self.widget = None
-
-  @NoExcept
-  def draw(self):
-    if not self.widget:
-
-      self.widget = Factory.Entity()
-      self.widget.px, self.widget.py = self.pos
-      self.canvas.add_widget(self.widget)
-    else:
-      self.widget.px, self.widget.py = self.pos
