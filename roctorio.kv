@@ -2,31 +2,41 @@
 # UNIT = 40: 1920x1080 -> 48x27
 # UNIT = 60: 1920x1080 -> 32x18
 
+#:import Factory kivy.factory.Factory
 #:import SIN math.sin
 #:import COS math.cos
 #:import pi math.pi
 
 #:set d60 -pi / 3
 
-#:set SIZE 128
-#:set OFFSET_X SIZE * 1 / 4 * (3 ** 0.5)
-#:set OFFSET_Y SIZE * 3 / 4
+#:set SIZE  128
+#:set OFFSET_X  SIZE * 1 / 4 * (3 ** 0.5)
+#:set OFFSET_Y  SIZE * 3 / 4
 
 <ColouredWidget@Widget>:
-  backcolor:       0.1, 0.1, 0.1, 1
-  forecolor:       1.0, 1.0, 1.0, 1
+  backcolor:            0.1, 0.1, 0.1, 1
+  forecolor:            1.0, 1.0, 1.0, 1
   
-  color:           self.forecolor
+  color:                self.forecolor
   
   canvas.before:
     Color:
-      rgba:        self.backcolor
+      rgba:             self.backcolor
     Rectangle:
-      pos:         self.pos
-      size:        self.size
+      pos:              self.pos
+      size:             self.size
 
 <ColouredLabel@ColouredWidget+Label>:
   font_size:            16
+
+<ColouredButton@Button>:
+  backcolor:            0.1, 0.1, 0.1, 1
+  forecolor:            1.0, 1.0, 1.0, 1
+  
+  color:                self.forecolor
+  
+  background_color:     self.backcolor
+  background_normal:    ''
 
 <ColouredFloatLayout@ColouredWidget+FloatLayout>:
 <ColouredGridLayout@ColouredWidget+GridLayout>:
@@ -189,28 +199,82 @@
 
 <GameInterface@ColouredFloatLayout>:
   backcolor:            1.0, 1.0, 1.0, 1
-  
-  ColouredLabel:
-    id:                 tps_meter
-    
-    backcolor:          0.8, 0.8, 0.8, 1
-    forecolor:          0.0, 0.0, 0.0, 1
-    
-    size_hint:          None, None
-    size:               UNIT * 3, UNIT
-    pos_hint:           {'top': 1, 'left': 0}
-    
-    text_size:          self.size
-    valign:             'center'
-    halign:             'left'
-    padding:            20, 10
     
   InfiniteHexGrid:
     id:                 playground
+  
+  GridLayout:
+    cols:               1
+    size_hint:          1 / 10, 1 / 8
+    pos_hint:           {'top': 1}
+    
+    ColouredLabel:
+      id:               tps_meter
+      
+      backcolor:        0.8, 0.8, 0.8, 1
+      forecolor:        0.0, 0.0, 0.0, 1
+      
+      text_size:        self.width, None
+      valign:           'center'
+      halign:           'left'
+      padding:          20, 5
+    
+    ColouredButton:
+      backcolor:        0.7, 0.7, 0.7, 1
+      forecolor:        0.0, 0.0, 0.0, 1
+      
+      text_size:        self.width, None
+      valign:           'center'
+      halign:           'center'
+      text:             'Скрафтить'
+      
+      on_press:
+        Factory.CraftingView().open()
+
+<CraftingRecipe@ColouredGridLayout>:
+  rows:                 1
+  
+  padding:              16, 16
+  spacing:              16, 0
+  
+  backcolor:            0.6, 0.6, 0.6, 1
+  
+  size_hint:            1, None
+  height:               32 + 28
+  
+  canvas.before:
+    Color:
+      rgba:             self.backcolor
+    Rectangle:
+      pos:              self.pos
+      size:             self.size
 
 <BlockingView@ModalView>:
+  auto_dismiss:         True
+  
   on_open:
     app.game_thread.pause_game()
   
   on_dismiss:
     app.game_thread.continue_game()
+
+<CraftingView@BlockingView>:
+  size_hint:            0.6, 0.6
+  
+  background:           ''
+  background_color:     0.9, 0.9, 0.9, 1
+  
+  ScrollView:
+    size_hint:          1, 1
+    
+    GridLayout:
+      cols:             1
+      
+      spacing:          0, 8
+      padding:          16, 16
+      size_hint:        1, None
+      height:           self.minimum_height
+      
+      id:               recipes
+      
+      on_kv_post:       app.put_recipes(self)

@@ -40,9 +40,11 @@ class RoctorioGameThread:
   
   def pause_game(self):
     self.pause_level += 1
+    print('Pause level', self.pause_level)
   
   def continue_game(self):
     self.pause_level -= 1
+    print('Pause level', self.pause_level)
 
 class RoctorioApp(App):
   def build(self):
@@ -53,6 +55,9 @@ class RoctorioApp(App):
     
     self.game_thread = RoctorioGameThread(self)
     self.game_thread.start()
+  
+  def put_recipes(self, recipes_layout):
+    self.game.put_recipes(recipes_layout)
 
 if __name__ == '__main__':
   try:

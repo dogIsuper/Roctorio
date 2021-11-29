@@ -1,7 +1,9 @@
+from kivy.core.window import Window
+from kivy.uix.widget import Widget
+from kivy.factory import Factory
+
 from utils import DisallowInterfaceInstantiation
 from invariants import NoExcept
-from kivy.uix.widget import Widget
-from kivy.core.window import Window
 from world import GridWorld
 
 import time
@@ -23,11 +25,14 @@ class TpsMeter(ITpsMeter):
     
     return tps
 
-class EntityPlayerRun(Widget):
-  def __init__(self, wd):
-    self.widget = None
+class KeyboardController(Widget):
+  def __init__(self, player):
+    self.widget = player
+    
+    keyboard = Window.request_keyboard(None, self)
+    keyboard.bind(on_key_down=self.key_pressed)
   
-  def keyPressed(self, keyboard, keycode, text, modifiers):
+  def key_pressed(self, keyboard, keycode, text, modifiers):
     if keycode[1] == 'w' and self.widget.pos[0] > 0 and self.widget.pos[1] < 7:
        self.widget.pos = [self.widget.pos[0] - 1, self.widget.pos[1] + 1]
     if keycode[1] == 'e' and self.widget.pos[1] < 7:
@@ -46,24 +51,24 @@ class IGameObject(DisallowInterfaceInstantiation):
   def log(self, message): pass
   def get_world(self):    pass
   def run_forever(self):  pass
+  def put_recipes(self, layout): pass
 
 class GameObject(IGameObject):
   @NoExcept
   def __init__(self, app):
     IGameObject.__init__(self)
     
-    self.world = GridWorld(app.root.ids.playground)
-    def CreateTest():
-      test = EntityPlayerRun(None)
-      TestKeyboard = Window.request_keyboard(None, test)
-      TestKeyboard.bind(on_key_down=test.keyPressed)
-      return test
-    test = CreateTest()
     self.app = app
-    
+    self.world = GridWorld(app.root.ids.playground)
     self.init_world()
+    
     player = self.world.get_player()
-    test.widget = player
+    self.controller = KeyboardController(player)
+    
+    self.recipes = [
+      [1, 2, 5, 7]
+    ]
+    
     self.tps = TpsMeter()
     self.tps.start()
   
@@ -94,6 +99,22 @@ class GameObject(IGameObject):
     
     for entity in self.world.entities:
       entity.step()
-      
     
     self.world.draw()
+  
+  @NoExcept
+  def put_recipes(self, layout):
+    for recipe in self.recipes:
+      recipe_widget = Factory.CraftingRecipe()
+      
+      for element in recipe:
+        recipe_resource = Factory.Resource()
+        recipe_resource.q = element
+        recipe_resource.id = 'universal ore'
+        
+        if len(recipe_widget.children) == 1:
+          recipe_widget.add_widget(Factory.Resource()) # some space
+        
+        recipe_widget.add_widget(recipe_resource)
+      
+      layout.add_widget(recipe_widget)
