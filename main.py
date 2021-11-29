@@ -21,13 +21,15 @@ from gameobject import GameObject
 class RoctorioGameThread:
   def __init__(self, app):
     self.app = app
+    self.pause_level = 0
     
   def start(self):
     Clock.schedule_once(self.update, 0)
   
   def update(self, timer):
     step_start = time.time()
-    self.app.game.step()
+    if not self.pause_level:
+      self.app.game.step()
     step_end = time.time()
     
     sps = 1.0 / max(step_end - step_start, 0.0001) # simulation steps per second
@@ -35,6 +37,12 @@ class RoctorioGameThread:
     self.app.root.ids.tps_meter.text = 'TPS: %.3f\nSPS: %.3f' % (self.app.tps, sps)
     
     Clock.schedule_once(self.update, 0)
+  
+  def pause_game(self):
+    self.pause_level += 1
+  
+  def continue_game(self):
+    self.pause_level -= 1
 
 class RoctorioApp(App):
   def build(self):
