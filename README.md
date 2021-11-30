@@ -24,5 +24,4 @@
 [Work In Progress]
 
 # Sending changes to the repository
-1. If you know my Discord:       create an archive with changed files and send to me.
-2. If you DON'T know my Discord: create a pull request here.
+Сreate a pull request here.

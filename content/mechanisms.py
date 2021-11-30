@@ -1,7 +1,10 @@
+import content.resources
+
 from mechanism import Mechanism, RegisterType
 from utils import MechCoordNormalizer
-from resource import ResourceStack
 from inventory import Inventory
+
+import resource
 
 def barrel_init(self):
   self.tx_source = 'assets\\mechanisms\\barrel-256.png'
@@ -29,6 +32,7 @@ def pump_step(self):
     else:
       return # no water found nearby
   
-  self.inventory.push(ResourceStack(1))
+  Water = resource.GetType('roctorio:item:water:')
+  self.inventory.push(Water(1))
 
 RegisterType('roctorio:mechanism:pump:', {'on_init': pump_init, 'on_step': pump_step})

@@ -109,18 +109,20 @@
   size:                 28, 28
   
   q:                    0
+  opacity:              bool(self.q) + 0
+  tx_source:            'assets\\resources\\water-256.png'
   
   canvas.before:
     Color:
-      rgba:             0.2, 0.4, 1.0, bool(self.q)
+      rgba:             1.0, 1.0, 1.0, 1
     
-    Ellipse:
-      segments:         5
+    Rectangle:
       pos:              self.pos
       size:             self.size
+      source:           self.tx_source
   
   Label:
-    text:               ('[b]%d[/b]' % root.q) if root.q else ''
+    text:               ('[b]%d[/b]' % root.q) if root.opacity else ''
     color:              0.0, 0.0, 0.0, 1
     markup:             True
     
