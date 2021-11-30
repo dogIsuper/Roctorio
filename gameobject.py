@@ -6,6 +6,9 @@ from utils import DisallowInterfaceInstantiation
 from invariants import NoExcept
 from world import GridWorld
 
+import content.crafts
+import craft
+
 import time
 
 class ITpsMeter(DisallowInterfaceInstantiation):
@@ -104,17 +107,5 @@ class GameObject(IGameObject):
   
   @NoExcept
   def put_recipes(self, layout):
-    for recipe in self.recipes:
-      recipe_widget = Factory.CraftingRecipe()
-      
-      for element in recipe:
-        recipe_resource = Factory.Resource()
-        recipe_resource.q = element
-        recipe_resource.id = 'universal ore'
-        
-        if len(recipe_widget.children) == 1:
-          recipe_widget.add_widget(Factory.Resource()) # some space
-        
-        recipe_widget.add_widget(recipe_resource)
-      
-      layout.add_widget(recipe_widget)
+    for recipe in craft.GetCrafts():
+      recipe.draw(layout)
