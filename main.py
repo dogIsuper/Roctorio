@@ -41,11 +41,11 @@ class RoctorioGameThread:
   
   def pause_game(self):
     self.pause_level += 1
-    print('Pause level', self.pause_level)
+    self.app.game.log('Pause level', self.pause_level)
   
   def continue_game(self):
     self.pause_level -= 1
-    print('Pause level', self.pause_level)
+    self.app.game.log('Pause level', self.pause_level)
 
 class RoctorioApp(App):
   def build(self):
@@ -59,6 +59,15 @@ class RoctorioApp(App):
   
   def put_recipes(self, recipes_layout):
     self.game.put_recipes(recipes_layout)
+  
+  def fillable_button_callback(self, fillable):
+    fillable.progress += 1
+    
+    if fillable.progress >= fillable.needed:
+      fillable.progress -= fillable.needed
+      
+      if fillable.callback:
+        fillable.callback(fillable)
 
 if __name__ == '__main__':
   try:

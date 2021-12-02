@@ -8,6 +8,7 @@ ResourcesEnum = {}
 # resource stacks are immutable
 class IResourceStack(DisallowInterfaceInstantiation):
   tx_source = 'assets\\resources\\water-256.png'
+  id        = ''
   tags      = ''
   limit     = 64
   
@@ -30,7 +31,7 @@ class ResourceStack(IResourceStack):
     if self.size == 0:  return other, self
     if other.size == 0: return self, other
     
-    if self.__class__ != other.__class__:
+    if self.__class__.__name__ != other.__class__.__name__:
       return self, other
     
     size = min(self.size + other.size, self.limit)

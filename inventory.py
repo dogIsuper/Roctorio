@@ -35,14 +35,19 @@ class Inventory(IInventory):
     
     return stack
   
-  def pop(self, max_size):
+  def pop(self, max_size, filter_id=''):
     stack = ResourceStack(0)
     
     for i in range(len(self.stacks)):
-      stack, slot = self.extract_stack(i).split(1)
+      slot = self.extract_stack(i)
+      if filter_id not in (slot.__class__.__name__, ''):
+        continue  # this is safe because .extract_stack() does not change state
+      
+      stack, slot = slot.split(max_size)
       self.put_stack(i, slot)
       
-      if stack.size: break
+      max_size -= stack.size
+      if not max_size: break
     
     return stack
   

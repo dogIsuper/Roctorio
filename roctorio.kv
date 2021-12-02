@@ -3,6 +3,7 @@
 # UNIT = 60: 1920x1080 -> 32x18
 
 #:import Factory kivy.factory.Factory
+#:import Clock kivy.clock.Clock
 #:import SIN math.sin
 #:import COS math.cos
 #:import pi math.pi
@@ -40,6 +41,43 @@
 
 <ColouredFloatLayout@ColouredWidget+FloatLayout>:
 <ColouredGridLayout@ColouredWidget+GridLayout>:
+
+<FillableButton@Button>:
+  backcolor:            0.9, 0.9, 0.9, 1
+  fillcolor:            0.6, 0.9, 0.6, 1
+  forecolor:            1.0, 1.0, 1.0, 1
+  background_color:     1.0, 1.0, 1.0, 0
+  background_normal:    ''
+  color:                self.forecolor
+  
+  progress:             0
+  needed:               10
+  
+  callback:             None
+  clock_callback:       None
+  scheduled:            None
+  
+  canvas.before:
+    Color:
+      rgba:             self.backcolor
+    Rectangle:
+      pos:              self.pos
+      size:             self.size
+    Color:
+      rgba:             self.fillcolor
+    Rectangle:
+      pos:              self.pos
+      size:             self.width * self.progress / self.needed, self.height
+  
+  on_press:
+    if self.scheduled: Clock.unschedule(self.scheduled)
+    self.clock_callback = lambda time: app.fillable_button_callback(self)
+    self.scheduled = Clock.schedule_interval(self.clock_callback, 0.05)
+  
+  on_release:
+    if self.scheduled: Clock.unschedule(self.scheduled)
+    self.scheduled = False
+    self.progress = 0
 
 ### position utils ###
 <HexPositionable@Widget>:
@@ -131,6 +169,19 @@
     size:               root.size
     halign:             'right'
     valign:             'bottom'
+
+<CraftResultArrow@Widget>:
+  size_hint:            None, None
+  size:                 28, 28
+  
+  canvas.before:
+    Color:
+      rgba:             1.0, 1.0, 1.0, 1
+    
+    Rectangle:
+      pos:              self.pos
+      size:             self.size
+      source:           'assets\\additional\\arrow.png'
 
 <Inventory@ColouredGridLayout>:
   rows:                 1
@@ -242,14 +293,15 @@
   backcolor:            0.6, 0.6, 0.6, 1
   
   size_hint:            1, None
-  height:               32 + 28
+  height:               self.minimum_height
   
-  canvas.before:
-    Color:
-      rgba:             self.backcolor
-    Rectangle:
-      pos:              self.pos
-      size:             self.size
+  FillableButton:
+    size_hint_x:        None
+    width:              300
+    text:               'Скрафтить'
+    forecolor:          0.0, 0.0, 0.0, 1
+    
+    id:                 craft_button
 
 <BlockingView@ModalView>:
   auto_dismiss:         True

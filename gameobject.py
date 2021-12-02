@@ -2,7 +2,7 @@ from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.factory import Factory
 
-from utils import DisallowInterfaceInstantiation
+from utils import DisallowInterfaceInstantiation, DivideFrequency
 from invariants import NoExcept
 from world import GridWorld
 
@@ -78,7 +78,7 @@ class GameObject(IGameObject):
   @NoExcept
   def log(self, *messages):
     message = ' '.join(str(m) for m in messages)
-    print('[LOG %s] %s' % (time.strftime('%d-%m-%Y %H:%M:%S'), message))
+    print('[Roctorio / LOG %s] %s' % (time.strftime('%d-%m-%Y %H:%M:%S'), message))
   
   @NoExcept
   def init_world(self):
@@ -108,4 +108,9 @@ class GameObject(IGameObject):
   @NoExcept
   def put_recipes(self, layout):
     for recipe in craft.GetCrafts():
-      recipe.draw(layout)
+      recipe.draw(self, layout)
+  
+  @NoExcept
+  def craft(self, recipe_widget):
+    recipe = recipe_widget.host
+    recipe.craft(self.world.get_player())
