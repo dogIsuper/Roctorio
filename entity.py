@@ -32,6 +32,7 @@ class Entity(IEntity):
   def draw(self):
     if not self.widget:
       self.widget = Factory.Entity()
+      self.widget.tx_source = self.tx_source
       self.canvas.add_widget(self.widget)
       
     self.widget.px, self.widget.py = self.pos
@@ -39,7 +40,7 @@ class Entity(IEntity):
     self.hp_bar.draw()
 
   @NoExcept
-  @DivideFrequency(20)
+  @DivideFrequency(40)
   def step(self):
     px, py = self.pos
     dx, dy = directions[random.randrange(0, 6)]

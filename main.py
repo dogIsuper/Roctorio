@@ -17,6 +17,11 @@ from kivy.app import App
 import time
 import os
 
+try:
+  import devpatch
+except:
+  pass
+
 from gameobject import GameObject
 
 class RoctorioGameThread:
