@@ -3,6 +3,8 @@ from kivy.factory import Factory
 from utils import DisallowInterfaceInstantiation
 from invariants import NoExcept
 
+import random
+
 BlocksEnum = {}
 
 class IBlock(DisallowInterfaceInstantiation):
@@ -19,6 +21,9 @@ class Block(IBlock):
     self.pos = px, py
     self.canvas = world.canvas
     self.widget = None
+    
+    if self.has_tag('ground'):
+      self.ore = random.randint(256, 1024)
   
   @NoExcept
   def draw(self):

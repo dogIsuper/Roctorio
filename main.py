@@ -5,7 +5,7 @@
 # (c) 2021, ProgramCrafter, dogIsuper, KarmaNT, SmartMushroom, JustWannaLive
 
 from kivy.config import Config
-Config.set('graphics', 'maxfps', 100)
+Config.set('graphics', 'maxfps', 200)
 Config.set('graphics', 'width', 1600)
 Config.set('graphics', 'height', 1024)
 Config.set('kivy', 'log_level', 'debug')

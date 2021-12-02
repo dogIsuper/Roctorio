@@ -29,7 +29,7 @@ class GridWorld(IWorld):
     River = decoration.GetType('roctorio:decoration:water:')
     Pipe = decoration.GetType('roctorio:decoration:pipe:')
     
-    Pump = mechanism.GetType('roctorio:mechanism:pump:')
+    Pump = mechanism.GetType('roctorio:mechanism:drill:')
     Barrel = mechanism.GetType('roctorio:mechanism:barrel:')
     
     Grass = block.GetType('roctorio:block:grass:')
@@ -40,7 +40,9 @@ class GridWorld(IWorld):
     # self.decorations = [Decoration(self, 1, 2, 1)]
     
     self.mechanisms.append(Pump(self, 1, 1, 0))
-    self.decorations.append(River(self, 1, 1, 5))
+    self.mechanisms.append(Barrel(self, 1, 4, 0))
+    self.decorations.append(River(self, 1, 1, 0))
+    self.decorations.extend(Pipe(self, 1, 1, i) for i in range(1, 6))
     
     # assert(self.get_mech(1, 2, 1))
     
