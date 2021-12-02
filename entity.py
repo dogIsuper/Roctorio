@@ -46,7 +46,7 @@ class Entity(IEntity):
     dx, dy = directions[random.randrange(0, 6)]
     nx, ny = px + dx, py + dy
     
-    if self.world.has_block(nx, ny):
+    if self.world.has_block(nx, ny) and not self.world.has_entity(nx, ny):
       self.pos = nx, ny
   
   @NoExcept

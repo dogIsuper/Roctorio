@@ -73,6 +73,14 @@ class GridWorld(IWorld):
     return (0 <= y < len(self.blocks)) and (0 <= x < len(self.blocks[y]))
   
   @NoExcept
+  def has_entity(self, x, y):
+    self.pos = x, y
+    for entity in self.entities:
+      if tuple(entity.pos) == self.pos:
+        return True
+    return False
+  
+  @NoExcept
   def get_deco(self, px, py, side):
     px, py, side = DecorCoordNormalizer.normalize(px, py, side)
     
