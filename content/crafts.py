@@ -1,5 +1,11 @@
 from craft import RegisterCraft
 
-RegisterCraft([# ('roctorio:item:water:', 2),
-               ('roctorio:item:ore:', 5)],
-    ('roctorio:item:water:', 1),)
+RegisterCraft(
+  [('roctorio:item:ore:', 5)],
+  
+  ('roctorio:item:pump:', 1))
+
+RegisterCraft(
+  [('roctorio:item:ore:', 3)],
+  
+  ('roctorio:item:barrel:', 1))

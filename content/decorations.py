@@ -6,7 +6,11 @@ def river_init(self):
   self.tx_source = 'assets\\decorations\\river-32-132.png'
   self.inventory = None
 
-RegisterType('roctorio:decoration:water:', {'on_init': river_init})
+RegisterType(
+  'roctorio:decoration:water:',
+  {'on_init': river_init, 'resource': {
+    'tx_source': 'assets\\decorations\\river-32-132.png'
+  }})
 
 #####
 
@@ -55,4 +59,8 @@ def pipe_step(self):
     stack = self.inventory.extract_stack(1)
     self.inventory.put_stack(1, push_to.push_stack(stack))
 
-RegisterType('roctorio:decoration:pipe:', {'on_init': pipe_init, 'on_step': pipe_step})
+RegisterType(
+  'roctorio:decoration:pipe:',
+  {'on_init': pipe_init, 'on_step': pipe_step, 'resource': {
+    'tx_source': 'assets\\decorations\\copper-pipe-32-132.png'
+  }})

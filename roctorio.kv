@@ -51,7 +51,7 @@
   color:                self.forecolor
   
   progress:             0
-  needed:               10
+  needed:               100
   
   callback:             None
   clock_callback:       None
@@ -67,7 +67,11 @@
       rgba:             self.fillcolor
     Rectangle:
       pos:              self.pos
-      size:             self.width * self.progress / self.needed, self.height
+      size:             self.width * self.progress / max(self.needed, 1), self.height
+        # max(self.needed, 1)  is needed because of ZeroDivisionError otherwise
+  
+  on_kv_post:
+    app.game.log('FillableButton.needed = ', self.needed)
   
   on_press:
     if self.scheduled: Clock.unschedule(self.scheduled)
@@ -298,7 +302,9 @@
   FillableButton:
     size_hint_x:        None
     width:              300
+    
     text:               'Скрафтить'
+    
     forecolor:          0.0, 0.0, 0.0, 1
     
     id:                 craft_button

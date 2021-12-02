@@ -5,6 +5,8 @@ from resource import ResourceStack
 from invariants import NoExcept
 from inventory import Inventory
 
+import resource
+
 MechanismsEnum = {}
 
 class IMechanism(DisallowInterfaceInstantiation):
@@ -68,6 +70,10 @@ class Mechanism(IMechanism):
 
 @NoExcept
 def RegisterType(id, callbacks): # on_init, on_step, on_interact
+  if 'resource' in callbacks:
+    resource.RegisterType(id.replace('mechanism', 'item', 1),
+                          callbacks.pop('resource'))
+  
   return MechanismsEnum.setdefault(id, type(id, (Mechanism,), callbacks))
 
 def GetType(id):

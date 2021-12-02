@@ -6,6 +6,8 @@ from resource import ResourceStack
 from invariants import NoExcept
 from inventory import Inventory
 
+import resource
+
 DecorationsEnum = {}
 
 class IDecoration(DisallowInterfaceInstantiation):
@@ -74,6 +76,10 @@ class Decoration(IDecoration):
 
 @NoExcept
 def RegisterType(id, callbacks): # on_init, on_step, on_interact
+  if 'resource' in callbacks:
+    resource.RegisterType(id.replace('decoration', 'item', 1),
+                          callbacks.pop('resource'))
+  
   return DecorationsEnum.setdefault(id, type(id, (Decoration,), callbacks))
 
 def GetType(id):
