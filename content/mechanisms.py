@@ -8,19 +8,19 @@ import resource
 import random
 
 def barrel_init(self):
-  self.tx_source = 'assets\\mechanisms\\barrel-256.png'
+  self.tx_source = 'assets/mechanisms/barrel-256.png'
   self.inventory = Inventory(self.world.canvas, self, 4)
 
 RegisterType(
   'roctorio:mechanism:barrel:',
   {'on_init': barrel_init, 'resource': {
-    'tx_source': 'assets\\mechanisms\\barrel-256.png'
+    'tx_source': 'assets/mechanisms/barrel-256.png'
   }})
 
 #####
 
 def pump_init(self):
-  self.tx_source = 'assets\\mechanisms\\pump-256.png'
+  self.tx_source = 'assets/mechanisms/pump-256.png'
   self.inventory = Inventory(self.world.canvas, self, 1)
 
 def pump_step(self):
@@ -43,7 +43,7 @@ def pump_step(self):
 RegisterType(
   'roctorio:mechanism:pump:',
   {'on_init': pump_init, 'on_step': pump_step, 'resource': {
-    'tx_source': 'assets\\mechanisms\\pump-256.png'
+    'tx_source': 'assets/mechanisms/pump-256.png'
   }})
 
 #####
@@ -51,7 +51,7 @@ RegisterType(
 
 
 def drill_init(self):
-  self.tx_source = 'assets\\mechanisms\\drill-256.png'
+  self.tx_source = 'assets/mechanisms/drill-256.png'
   self.inventory = Inventory(self.world.canvas, self, 1)
 
 def drill_step(self):
@@ -87,5 +87,5 @@ def drill_step(self):
 RegisterType(
   'roctorio:mechanism:drill:',
   {'on_init': drill_init, 'on_step': drill_step, 'resource': {
-    'tx_source': 'assets\\mechanisms\\drill-256.png'
+    'tx_source': 'assets/mechanisms/drill-256.png'
   }})

@@ -3,19 +3,19 @@ from utils import MechCoordNormalizer
 from inventory import Inventory
 
 def river_init(self):
-  self.tx_source = 'assets\\decorations\\river-32-132.png'
+  self.tx_source = 'assets/decorations/river-32-132.png'
   self.inventory = None
 
 RegisterType(
   'roctorio:decoration:water:',
   {'on_init': river_init, 'resource': {
-    'tx_source': 'assets\\decorations\\river-32-132.png'
+    'tx_source': 'assets/decorations/river-32-132.png'
   }})
 
 #####
 
 def pipe_init(self):
-  self.tx_source = 'assets\\decorations\\copper-pipe-32-132.png'
+  self.tx_source = 'assets/decorations/copper-pipe-32-132.png'
   self.inventory = Inventory(self.world.canvas, self, 2)
   self.move_direction = 1
 
@@ -62,5 +62,5 @@ def pipe_step(self):
 RegisterType(
   'roctorio:decoration:pipe:',
   {'on_init': pipe_init, 'on_step': pipe_step, 'resource': {
-    'tx_source': 'assets\\decorations\\copper-pipe-32-132.png'
+    'tx_source': 'assets/decorations/copper-pipe-32-132.png'
   }})

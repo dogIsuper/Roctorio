@@ -101,7 +101,7 @@
 
 ### drawing utils ###
 <HexagonDrawer@Widget>:
-  tx_source:            'assets\\tiles\\desert-256-b.png'
+  tx_source:            'assets/tiles/desert-256-b.png'
   
   size_hint:            None, None
   size:                 SIZE, SIZE
@@ -117,7 +117,7 @@
       source:           self.tx_source
 
 <EntityDrawer@Widget>:
-  tx_source:            'assets\\entities\\entity-256.png'
+  tx_source:            'assets/entities/entity-256.png'
   
   size_hint:            None, None
   size:                 SIZE, SIZE
@@ -152,7 +152,7 @@
   
   q:                    0
   opacity:              bool(self.q) + 0
-  tx_source:            'assets\\resources\\water-256.png'
+  tx_source:            'assets/resources/water-256.png'
   
   canvas.before:
     Color:
@@ -185,7 +185,7 @@
     Rectangle:
       pos:              self.pos
       size:             self.size
-      source:           'assets\\additional\\arrow.png'
+      source:           'assets/additional/arrow.png'
 
 <Inventory@ColouredGridLayout>:
   rows:                 1
@@ -205,7 +205,7 @@
 <Entity@HexPositionable+EntityDrawer>:
 
 <Decoration@HexPositionable>:
-  tx_source:            'assets\\decorations\\copper-pipe-16-76.png'
+  tx_source:            'assets/decorations/copper-pipe-16-76.png'
   
   side:                 0
   
@@ -236,7 +236,7 @@
     PopMatrix
 
 <Mechanism@MechanismDeltaCalc>:
-  tx_source:            'assets\\mechanisms\\pump-256.png'
+  tx_source:            'assets/mechanisms/pump-256.png'
   
   size_hint:            None, None
   size:                 SIZE / 3, SIZE / 3
