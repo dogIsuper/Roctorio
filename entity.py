@@ -12,7 +12,10 @@ class IEntity(DisallowInterfaceInstantiation):
 
   def init(self, world, px, py): pass
   def draw(self):                pass
+  def undraw(self):              pass
+  def step(self):                pass
   def local_controlled(self):    pass
+  def attack(self, amount):      pass
 
 class Entity(IEntity):
   tx_source = 'assets/entities/entity-256.png'
@@ -38,6 +41,14 @@ class Entity(IEntity):
     self.widget.px, self.widget.py = self.pos
     self.hp_bar.pos = self.pos
     self.hp_bar.draw()
+  
+  @NoExcept
+  def undraw(self):
+    if self.widget:
+      self.canvas.remove_widget(self.widget)
+      self.widget = None
+    
+    self.hp_bar.undraw()
 
   @NoExcept
   @DivideFrequency(40)
@@ -74,7 +85,7 @@ class EntityPlayer(Entity):
 class IEntityHP(DisallowInterfaceInstantiation):
   def init(self, world, px, py): pass
   def draw(self):                pass
-  def attack(self, amount):      pass
+  def undraw(self):              pass
   
 class EntityHP(IEntityHP):
   @NoExcept
@@ -92,3 +103,9 @@ class EntityHP(IEntityHP):
     
     self.widget.px, self.widget.py = self.pos
     self.widget.health = self.hp
+    
+  @NoExcept
+  def undraw(self):
+    if self.widget:
+      self.canvas.remove_widget(self.widget)
+      self.widget = None

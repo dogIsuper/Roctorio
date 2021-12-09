@@ -109,6 +109,7 @@ class GridWorld(IWorld):
   @NoExcept
   def remove_entity(self, entity):
     self.entities.remove(entity)
+    entity.undraw()
   
   @NoExcept
   def draw(self):
