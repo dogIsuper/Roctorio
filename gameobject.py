@@ -4,6 +4,7 @@ from kivy.factory import Factory
 
 from utils import DisallowInterfaceInstantiation, DivideFrequency
 from invariants import NoExcept
+from utils import directions
 from world import GridWorld
 
 import content.crafts
@@ -114,3 +115,12 @@ class GameObject(IGameObject):
   def craft(self, recipe_widget):
     recipe = recipe_widget.host
     recipe.craft(self.world.get_player())
+  
+  @NoExcept
+  def attack_nearby(self):
+    player = self.world.get_player()
+    for (dx, dy) in directions:
+      nx, ny = player.pos[0] + dx, player.pos[1] + dy
+      
+      entity = self.world.get_entity(nx, ny)
+      if entity: entity.attack(1)

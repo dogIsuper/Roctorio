@@ -52,6 +52,13 @@ class Entity(IEntity):
   @NoExcept
   def local_controlled(self):
     return False
+  
+  @NoExcept
+  def attack(self, amount):
+    self.hp_bar.hp -= amount
+    
+    if self.hp_bar.hp <= 0:
+      self.world.remove_entity(self)
 
 class EntityPlayer(Entity):
   tx_source = 'assets/entities/entity-256.png'
@@ -67,6 +74,7 @@ class EntityPlayer(Entity):
 class IEntityHP(DisallowInterfaceInstantiation):
   def init(self, world, px, py): pass
   def draw(self):                pass
+  def attack(self, amount):      pass
   
 class EntityHP(IEntityHP):
   @NoExcept
@@ -74,6 +82,7 @@ class EntityHP(IEntityHP):
     self.pos = px, py
     self.canvas = world.canvas
     self.widget = None
+    self.hp = 10
     
   @NoExcept
   def draw(self):
@@ -82,3 +91,4 @@ class EntityHP(IEntityHP):
       self.canvas.add_widget(self.widget)
     
     self.widget.px, self.widget.py = self.pos
+    self.widget.health = self.hp

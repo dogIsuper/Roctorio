@@ -75,12 +75,16 @@ class GridWorld(IWorld):
     return (0 <= y < len(self.blocks)) and (0 <= x < len(self.blocks[y]))
   
   @NoExcept
-  def has_entity(self, x, y):
+  def get_entity(self, x, y):
     self.pos = x, y
     for entity in self.entities:
       if tuple(entity.pos) == self.pos:
-        return True
-    return False
+        return entity
+    return None
+  
+  @NoExcept
+  def has_entity(self, x, y):
+    return bool(self.get_entity(x, y))
   
   @NoExcept
   def get_deco(self, px, py, side):
@@ -101,6 +105,10 @@ class GridWorld(IWorld):
         return mech
     
     return None
+  
+  @NoExcept
+  def remove_entity(self, entity):
+    self.entities.remove(entity)
   
   @NoExcept
   def draw(self):
