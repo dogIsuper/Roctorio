@@ -84,11 +84,11 @@ class GameObject(IGameObject):
   def init_world(self):
     for deco in self.world.decorations:
       for (px, py) in deco.adjacent_tiles():
-        self.world.get_block(px, py).tx_source = 'assets\\tiles\\light-grass-256-b.png'
+        self.world.get_block(px, py).tx_source = 'assets/tiles/light-grass-256-b.png'
     
     for mech in self.world.mechanisms:
       for (px, py) in mech.adjacent_tiles():
-        self.world.get_block(px, py).tx_source = 'assets\\tiles\\desert-256-b.png'
+        self.world.get_block(px, py).tx_source = 'assets/tiles/desert-256-b.png'
   
   @NoExcept
   def step(self):

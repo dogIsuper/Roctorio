@@ -15,7 +15,7 @@ class IEntity(DisallowInterfaceInstantiation):
   def local_controlled(self):    pass
 
 class Entity(IEntity):
-  tx_source = 'assets\\entities\\entity-256.png'
+  tx_source = 'assets/entities/entity-256.png'
 
   @NoExcept
   def __init__(self, world, px, py):
@@ -54,7 +54,7 @@ class Entity(IEntity):
     return False
 
 class EntityPlayer(Entity):
-  tx_source = 'assets\\entities\\entity-256.png'
+  tx_source = 'assets/entities/entity-256.png'
   
   @NoExcept
   def step(self):
