@@ -59,8 +59,14 @@ def pipe_step(self):
     stack = self.inventory.extract_stack(1)
     self.inventory.put_stack(1, push_to.push_stack(stack))
 
+def pipe_interact(self):
+  self.move_direction = 1 - self.move_direction
+  
+  self.widget.r = self.move_direction
+
 RegisterType(
   'roctorio:decoration:pipe:',
-  {'on_init': pipe_init, 'on_step': pipe_step, 'resource': {
+  {'on_init': pipe_init, 'on_step': pipe_step, 'on_interact': pipe_interact,
+   'resource': {
     'tx_source': 'assets/decorations/copper-pipe-32-132.png'
   }})

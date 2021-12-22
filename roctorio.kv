@@ -4,13 +4,14 @@
 
 #:import Factory kivy.factory.Factory
 #:import Clock kivy.clock.Clock
+#:import ATAN2 math.atan2
 #:import SIN math.sin
 #:import COS math.cos
 #:import pi math.pi
 
 #:set d60 -pi / 3
 
-#:set SIZE  128
+#:set SIZE      128
 #:set OFFSET_X  SIZE * 1 / 4 * (3 ** 0.5)
 #:set OFFSET_Y  SIZE * 3 / 4
 
@@ -217,20 +218,24 @@
   tx_source:            'assets/decorations/copper-pipe-16-76.png'
   
   side:                 0
+  callback:             None
   
   dec_offset:           6
   
+  r:                    1.0
+  
   size_hint:            None, None
-  width:                16
+  width:                SIZE / 8
   height:               SIZE / 2 + self.dec_offset * 2
   
-  host_x:               self.x + OFFSET_X + 8 + COS(d60 * self.side) * (OFFSET_X - 8) + 10
+  # host_x:               self.x + OFFSET_X + 8 + COS(d60 * self.side) * (OFFSET_X - 8) + 10
+  host_x:               self.x + OFFSET_X + 8 + COS(d60 * self.side) * (OFFSET_X - 8) - 10
   host_y:               self.y + SIZE / 2 + SIN(d60 * self.side) * (SIZE / 2 - self.dec_offset) - 20
   host_pos:             self.host_x, self.host_y
   
   canvas.after:
     Color:
-      rgba:             1.0, 1.0, 1.0, 1
+      rgba:             self.r or 0.0, 1.0, 1.0, 1
     
     PushMatrix
     Rotate:
@@ -243,6 +248,29 @@
       source:           self.tx_source
     
     PopMatrix
+  
+  on_touch_down:
+    # rotation center X, Y
+    rcx, rcy = self.x + OFFSET_X + 8, self.y + SIZE / 2
+    
+    # touch X, Y
+    tx, ty = args[1].pos
+    tx -= rcx
+    ty -= rcy
+    
+    dist = (tx * tx + ty * ty) ** 0.5
+    alpha = ATAN2(ty, tx)
+    alpha += pi / 3 * self.side
+    
+    # rotated touch X, Y
+    rtx, rty = COS(alpha) * dist, SIN(alpha) * dist
+    rtx += rcx
+    rty += rcy
+    
+    dlx, dby = self.x + OFFSET_X * 2, self.y + SIZE / 4 - self.dec_offset
+    drx, dty = dlx + self.width, dby + self.height
+    
+    if dlx <= rtx <= drx and dby <= rty <= dty and self.callback: self.callback()
 
 <Mechanism@MechanismDeltaCalc>:
   tx_source:            'assets/mechanisms/pump-256.png'
@@ -250,7 +278,8 @@
   size_hint:            None, None
   size:                 SIZE / 3, SIZE / 3
   
-  host_pos:             self.right - 12, self.top - 12
+  # host_pos:             self.right - 12, self.top - 12
+  host_pos:             self.x - 12, self.top - 12
   
   canvas.after:
     Color:

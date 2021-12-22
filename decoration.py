@@ -44,6 +44,9 @@ class Decoration(IDecoration):
       self.widget = Factory.Decoration()
       self.widget.px, self.widget.py = self.pos
       self.widget.side = self.side
+      
+      if self.on_interact: self.widget.callback = self.on_interact
+      
       self.canvas.add_widget(self.widget)
     
     self.widget.tx_source = self.tx_source
