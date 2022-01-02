@@ -4,6 +4,7 @@ from utils import DisallowInterfaceInstantiation
 from invariants import NoExcept
 
 ResourcesEnum = {}
+WidgetsPools = {'ResourceStack': []}
 
 # resource stacks are immutable
 class IResourceStack(DisallowInterfaceInstantiation):
@@ -49,9 +50,19 @@ class ResourceStack(IResourceStack):
     return self.__class__(size), self.__class__(self.size - size)
   
   @NoExcept
+  def widget_from_pool(self):
+    pool = WidgetsPools[self.__class__.__name__]
+    if pool: return pool.pop()
+    return Factory.Resource()
+  
+  @NoExcept
+  def widget_to_pool(self, widget):
+    WidgetsPools[self.__class__.__name__].append(widget)
+  
+  @NoExcept
   def draw(self, inv_widget):
     if not self.widget:
-      self.widget = Factory.Resource()
+      self.widget = self.widget_from_pool()
       self.widget.q = self.size
       self.widget.tx_source = self.tx_source
     
@@ -65,6 +76,8 @@ class ResourceStack(IResourceStack):
   def undraw(self, inv_widget):
     if self.widget:
       inv_widget.remove_widget(self.widget)
+      self.widget_to_pool(self.widget)
+      self.widget = None # other ResourceStack can take it
   
   @NoExcept
   def has_tag(self, tag):
@@ -72,6 +85,7 @@ class ResourceStack(IResourceStack):
 
 @NoExcept
 def RegisterType(id, callbacks): # tx_source, limit
+  WidgetsPools[id] = []
   return ResourcesEnum.setdefault(id, type(id, (ResourceStack,), callbacks))
 
 def GetType(id):

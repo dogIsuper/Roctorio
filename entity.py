@@ -37,7 +37,7 @@ class Entity(IEntity):
       self.widget = Factory.Entity()
       self.widget.tx_source = self.tx_source
       self.canvas.add_widget(self.widget)
-      
+    
     self.widget.px, self.widget.py = self.pos
     self.hp_bar.pos = self.pos
     self.hp_bar.draw()
