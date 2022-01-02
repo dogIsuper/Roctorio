@@ -4,7 +4,7 @@ from inventory import Inventory
 
 def river_init(self):
   self.tx_source = 'assets/decorations/river-32-132.png'
-  self.inventory = None
+  self.inventory = Inventory(self.world.canvas, self, 0)
 
 RegisterType(
   'roctorio:decoration:water:',
