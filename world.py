@@ -6,6 +6,8 @@ import content.decorations
 import content.mechanisms
 import content.blocks
 
+import resource
+
 from entity import Entity, EntityPlayer
 import decoration
 import mechanism
@@ -48,6 +50,8 @@ class GridWorld(IWorld):
     
     print(Entity.tx_source)
     self.entities = [Entity(self, 3, 5), EntityPlayer(self, 3, 3)]
+    
+    self.get_player().inventory.push(resource.GetType('roctorio:item:water:')(1))
     
     self.draw()
   

@@ -209,6 +209,9 @@
   padding:              4, 4
   spacing:              4, 4
   
+  on_host:
+    self.pos = self.host.host_pos
+  
 ### drawing utils end ###
 
 <Hex@HexPositionable+HexagonDrawer>:
@@ -294,9 +297,12 @@
 
 <GameInterface@ColouredFloatLayout>:
   backcolor:            1.0, 1.0, 1.0, 1
-    
+  
   InfiniteHexGrid:
     id:                 playground
+    
+    # raccoon's inventory position
+    host_pos:           self.width * 1 / 10, self.height * (1 - 1 / 8)
   
   GridLayout:
     cols:               1

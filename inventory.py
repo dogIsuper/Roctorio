@@ -1,6 +1,7 @@
+from kivy.uix.widget import Widget
 from kivy.factory import Factory
 
-from utils import DisallowInterfaceInstantiation
+from utils import DisallowInterfaceInstantiation, DivideFrequency
 from resource import ResourceStack
 from invariants import NoExcept
 
@@ -52,11 +53,31 @@ class Inventory(IInventory):
     return stack
   
   @NoExcept
-  def draw(self):
-    if not self.widget and self.host:
+  @DivideFrequency(8)
+  def debug_print(self, *a, **k):
+    print(*a, **k)
+  
+  @NoExcept
+  def draw(self, debug=False):
+    # TODO: remove debug prints
+    if not self.host:
+      if debug:
+        self.debug_print(self, 'had no host so could not be drawn')
+    
+    if not self.widget:
       self.widget = Factory.Inventory()
-      self.widget.host = self.host.widget
       self.canvas.add_widget(self.widget)
+    
+    self.widget.host = self.host if isinstance(self.host, Widget) else self.host.widget
+    
+    # TODO: remove forcing widget position
+    # widget.host = ... must work as well, but for some reason doesn't
+    self.widget.pos = self.widget.host.host_pos
+    
+    if debug:
+      self.debug_print('selected host', self.widget.host,
+                       'pos', self.widget.host.host_pos,
+                       'widget pos', self.widget.pos)
     
     sum_size = 0
     for stack in self.stacks:
