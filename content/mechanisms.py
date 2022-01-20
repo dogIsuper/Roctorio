@@ -9,7 +9,7 @@ import random
 
 def barrel_init(self):
   self.tx_source = 'assets/mechanisms/barrel-256.png'
-  self.inventory = Inventory(self.world.canvas, self, 4)
+  self.inventory = Inventory(self.world, self, 4)
 
 RegisterType(
   'roctorio:mechanism:barrel:',
@@ -21,7 +21,7 @@ RegisterType(
 
 def pump_init(self):
   self.tx_source = 'assets/mechanisms/pump-256.png'
-  self.inventory = Inventory(self.world.canvas, self, 1)
+  self.inventory = Inventory(self.world, self, 1)
 
 def pump_step(self):
   # searching oceans and lakes
@@ -52,7 +52,7 @@ RegisterType(
 
 def drill_init(self):
   self.tx_source = 'assets/mechanisms/drill-256.png'
-  self.inventory = Inventory(self.world.canvas, self, 1)
+  self.inventory = Inventory(self.world, self, 1)
 
 def drill_step(self):
   # searching tile with ore

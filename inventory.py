@@ -6,14 +6,15 @@ from resource import ResourceStack
 from invariants import NoExcept
 
 class IInventory(DisallowInterfaceInstantiation):
-  def __init__(self, canvas, host, slots): pass
+  def __init__(self, world, host, slots): pass
   def draw(self): pass
 
 class Inventory(IInventory):
   @NoExcept
-  def __init__(self, canvas, host, slots):
+  def __init__(self, world, host, slots):
     self.stacks = [ResourceStack(0)] * slots
-    self.canvas = canvas
+    self.canvas = world.canvas
+    self.world = world
     self.widget = None
     self.host = host
   
@@ -67,6 +68,8 @@ class Inventory(IInventory):
     if not self.widget:
       self.widget = Factory.Inventory()
       self.canvas.add_widget(self.widget)
+      
+      self.world.notify_inventory(self)
     
     self.widget.host = self.host if isinstance(self.host, Widget) else self.host.widget
     
@@ -81,7 +84,14 @@ class Inventory(IInventory):
     
     sum_size = 0
     for stack in self.stacks:
-      stack.draw(self.widget)
+      stack.draw(self)
       sum_size += stack.size
     
     self.widget.opacity = 0.3 if sum_size == 0 else 1
+  
+  @NoExcept
+  def pop_resource(self, resource):
+    for slot, stack in enumerate(self.stacks):
+      if stack == resource:
+        self.stacks[slot] = ResourceStack(0)
+    return resource

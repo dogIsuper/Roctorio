@@ -30,7 +30,7 @@ class Entity(IEntity):
     self.hp_bar = EntityHP(world, px, py)
     
     if not self.local_controlled():
-      self.inventory = Inventory(world.canvas, self, 9)
+      self.inventory = Inventory(world, self, 9)
 
   @NoExcept
   def draw(self):
@@ -79,7 +79,7 @@ class EntityPlayer(Entity):
   def __init__(self, world, px, py):
     super(EntityPlayer, self).__init__(world, px, py)
     
-    self.inventory = Inventory(world.canvas, world.canvas, 9)
+    self.inventory = Inventory(world, world.canvas, 9)
   
   @NoExcept
   def step(self):
@@ -89,7 +89,7 @@ class EntityPlayer(Entity):
   def draw(self):
     super(EntityPlayer, self).draw()
     
-    self.inventory.draw(debug=True) # TODO: remove debug prints
+    self.inventory.draw(debug=False) # TODO: remove debug prints
 
   @NoExcept
   def local_controlled(self):

@@ -156,13 +156,30 @@
       pos:              self.pos
       size:             self.width * self.health / 10, self.height
 
-<Resource@Widget>:
+<Resource@DragBehavior+Widget>:
   size_hint:            None, None
   size:                 28, 28
   
   q:                    0
   opacity:              bool(self.q) + 0
   tx_source:            'assets/resources/water-256.png'
+  
+  drag_rectangle:       self.x, self.y, self.width, self.height
+  drag_timeout:         10000000
+  drag_distance:        0
+  
+  py_resource:          None
+  
+  on_touch_down:
+    if self.collide_point(*args[1].pos): print('dragging', self.py_resource)
+  # TODO: freeze inventory
+  #   if self.collide_point(*args[1].pos): self.py_resource.freeze_inventory()
+  
+  on_touch_up:
+    # _drag_touch is black magic from Kivy source
+    # https://github.com/kivy/kivy/blob/
+    #   31308184cf2c127e77b3f61c100179f854d4df3f/kivy/uix/behaviors/drag.py#L196
+    if self._drag_touch: self.py_resource.align(app.game.world)
   
   canvas.before:
     Color:
@@ -199,7 +216,7 @@
 
 <Inventory@ColouredGridLayout>:
   rows:                 1
-  backcolor:            1.0, 1.0, 1.0, 0.6
+  backcolor:            0.9, 0.9, 0.9, 0.7
   host:                 None
   
   size_hint:            None, None

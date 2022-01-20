@@ -26,6 +26,7 @@ class ResourceStack(IResourceStack):
   def __init__(self, size):
     self.size = size
     self.widget = None
+    self.inventory = None
   
   @NoExcept
   def merge(self, other):
@@ -60,11 +61,15 @@ class ResourceStack(IResourceStack):
     WidgetsPools[self.__class__.__name__].append(widget)
   
   @NoExcept
-  def draw(self, inv_widget):
+  def draw(self, inv):
+    self.inventory = inv
+    inv_widget = inv.widget # if inv else None
+    
     if not self.widget:
       self.widget = self.widget_from_pool()
       self.widget.q = self.size
       self.widget.tx_source = self.tx_source
+      self.widget.py_resource = self
     
     if self.widget.parent not in (None, inv_widget):
       self.widget.parent.remove_widget(self.widget)
@@ -82,6 +87,13 @@ class ResourceStack(IResourceStack):
   @NoExcept
   def has_tag(self, tag):
     return tag.lower() in self.tags.split(':')
+  
+  def align(self, world):
+    selected_inv = world.get_inventory(self.widget) or self.inventory
+    assert(self.inventory, 'otherwise the widget could not be dragged')
+    
+    if selected_inv != self.inventory:
+      self.inventory.push(selected_inv.push(self.inventory.pop_resource(self)))
 
 @NoExcept
 def RegisterType(id, callbacks): # tx_source, limit

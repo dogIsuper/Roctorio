@@ -5,7 +5,7 @@
 # (c) 2021, ProgramCrafter, dogIsuper, KarmaNT, SmartMushroom, JustWannaLive
 
 from kivy.config import Config
-Config.set('graphics', 'maxfps', 200)
+Config.set('graphics', 'maxfps', 2000)
 Config.set('graphics', 'width', 1600)
 Config.set('graphics', 'height', 1024)
 Config.set('kivy', 'log_level', 'debug')
@@ -39,6 +39,11 @@ class RoctorioGameThread:
     step_end = time.time()
     
     sps = 1.0 / max(step_end - step_start, 0.0001) # simulation steps per second
+    
+    if sps > 500:
+      sps = 100 * (sps // 100)
+    elif sps > 100:
+      sps = 10 * (sps // 10)
     
     self.app.root.ids.tps_meter.text = 'TPS: %.3f\nSPS: %.3f' % (self.app.tps, sps)
     

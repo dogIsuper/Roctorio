@@ -20,6 +20,9 @@ class IWorld(DisallowInterfaceInstantiation):
   def has_block(self, x, y):      pass
   def get_deco(self, x, y, side): pass
   def get_mech(self, x, y, side): pass
+  
+  def notify_inventory(self, pos, size):  pass
+  def get_inventory(self, pos):           pass
 
 class GridWorld(IWorld):
   @NoExcept
@@ -53,6 +56,7 @@ class GridWorld(IWorld):
     
     self.get_player().inventory.push(resource.GetType('roctorio:item:water:')(1))
     
+    self.inventories = []
     self.draw()
   
   @NoExcept
@@ -129,6 +133,17 @@ class GridWorld(IWorld):
     
     for entity in self.entities:
       entity.draw()
+  
+  @NoExcept
+  def notify_inventory(self, w):
+    self.inventories.append(w)
+  
+  @NoExcept
+  def get_inventory(self, resource):
+    for inv in self.inventories[::-1]:
+      if inv.widget.collide_widget(resource):
+        return inv
+    return None
   
   @NoExcept
   def get_player(self):

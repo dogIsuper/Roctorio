@@ -4,7 +4,7 @@ from inventory import Inventory
 
 def river_init(self):
   self.tx_source = 'assets/decorations/river-32-132.png'
-  self.inventory = Inventory(self.world.canvas, self, 0)
+  self.inventory = Inventory(self.world, self, 0)
 
 RegisterType(
   'roctorio:decoration:water:',
@@ -16,7 +16,7 @@ RegisterType(
 
 def pipe_init(self):
   self.tx_source = 'assets/decorations/copper-pipe-32-132.png'
-  self.inventory = Inventory(self.world.canvas, self, 2)
+  self.inventory = Inventory(self.world, self, 2)
   self.move_direction = 1
 
 def pipe_step(self):
