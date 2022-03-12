@@ -6,7 +6,7 @@
 
 * Install Python (any version between 3.7 and 3.9)
 * Install Git
-* Navigate to the directory with *python.exe* and run
+* Find *python.exe* (on Windows) or *python3* executable (on Linux) and run (replace *python* with *python3* for Linux):
   * `python -m pip install --upgrade pip setuptools`
   * `python -m pip install kivy`
   * `python -m pip install requests`
