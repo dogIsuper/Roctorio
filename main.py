@@ -6,8 +6,8 @@
 
 from kivy.config import Config
 Config.set('graphics', 'maxfps', 2000)
-Config.set('graphics', 'width', 1600)
-Config.set('graphics', 'height', 1024)
+Config.set('graphics', 'width', 1500)
+Config.set('graphics', 'height', 800)
 Config.set('kivy', 'log_level', 'debug')
 
 from kivy.factory import Factory

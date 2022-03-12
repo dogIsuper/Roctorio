@@ -27,7 +27,7 @@ class TpsMeter(ITpsMeter):
     tps = 1 / max(cur_tick - self.last_tick, 0.001)
     self.last_tick = cur_tick
     
-    return tps
+    return tps // 10.0 * 10.0
 
 class KeyboardController(Widget):
   def __init__(self, player):
@@ -37,18 +37,16 @@ class KeyboardController(Widget):
     keyboard.bind(on_key_down=self.key_pressed)
   
   def key_pressed(self, keyboard, keycode, text, modifiers):
-    if keycode[1] == 'w' and self.widget.pos[0] > 0 and self.widget.pos[1] < 7:
-       self.widget.pos = [self.widget.pos[0] - 1, self.widget.pos[1] + 1]
-    if keycode[1] == 'e' and self.widget.pos[1] < 7:
-      self.widget.pos = [self.widget.pos[0], self.widget.pos[1] + 1]
-    if keycode[1] == 'd' and self.widget.pos[0] < 7:
-      self.widget.pos = [self.widget.pos[0] + 1, self.widget.pos[1]]
-    if keycode[1] == 'x' and self.widget.pos[0] < 7 and self.widget.pos[1] > 0:
-      self.widget.pos = [self.widget.pos[0] + 1, self.widget.pos[1] - 1]
-    if keycode[1] == 'z' and self.widget.pos[1] > 0:
-      self.widget.pos = [self.widget.pos[0], self.widget.pos[1] - 1]
-    if keycode[1] == 'a' and self.widget.pos[0] > 0:
-      self.widget.pos = [self.widget.pos[0] - 1, self.widget.pos[1]]
+    direction_chars = ('d', 'e', 'w', 'a', 'z', 'x')
+    if keycode[1] not in direction_chars:
+      return
+    
+    cur_dir = directions[direction_chars.index(keycode[1])]
+    new_pos = [self.widget.pos[0] + cur_dir[0], self.widget.pos[1] + cur_dir[1]]
+    
+    if self.widget.world.has_block(*new_pos):
+      self.widget.pos = new_pos
+    
     self.widget.draw()
 
 class IGameObject(DisallowInterfaceInstantiation):
@@ -68,10 +66,6 @@ class GameObject(IGameObject):
     
     player = self.world.get_player()
     self.controller = KeyboardController(player)
-    
-    self.recipes = [
-      [1, 2, 5, 7]
-    ]
     
     self.tps = TpsMeter()
     self.tps.start()
