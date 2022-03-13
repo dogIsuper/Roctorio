@@ -6,7 +6,7 @@ from invariants import NoExcept
 ResourcesEnum = {}
 WidgetsPools = {'ResourceStack': []}
 
-# resource stacks are immutable
+# resource stack's size and tx_source are immutable
 class IResourceStack(DisallowInterfaceInstantiation):
   tx_source = 'assets\\resources\\water-256.png'
   id        = ''

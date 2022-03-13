@@ -1,4 +1,5 @@
 # from invariants import InvariantFailedError ### cyclic import #
+from kivy.uix.widget import Widget
 
 class DisallowInterfaceInstantiation:
   def __init__(self):
@@ -90,6 +91,56 @@ class MechCoordNormalizer:
       return (px, py, 0), (px, py + 1, 2), (px, py + 1, 1)
     else:
       return (px, py, 0), (px, py, 1), (px + 1, py, 2)
+
+class GameDesignSolutions:
+  SIZE = 128
+  
+  def _inventory_adjacents(inventory):
+    from mechanism import Mechanism
+    from decoration import Decoration
+    
+    host = inventory.host
+    if isinstance(host, Mechanism) or isinstance(host, Decoration):
+      return host.adjacent_tiles()
+    return []
+  
+  def inventory_position(inventory_host):
+    from mechanism import Mechanism
+    from decoration import Decoration
+    
+    if isinstance(inventory_host, Mechanism):
+      cx, cy, side = *inventory_host.widget.pos, inventory_host.side
+      
+      # FIXME: message below
+      SIZE = GameDesignSolutions.SIZE
+      if side == 0: return cx + SIZE / 4, cy + SIZE / 4
+      if side == 1: return cx + SIZE / 4, cy - SIZE / 4
+      
+      # useless, as position is normalized to (0, 1)
+      # we shall use the raccoon's position
+      if side == 2: return cx, cy - SIZE / 2
+      if side == 3: return cx - SIZE, cy - SIZE / 4
+      if side == 4: return cx - SIZE, cy + SIZE / 4
+      if side == 5: return cx, cy + SIZE / 2
+    elif isinstance(inventory_host, Decoration):
+      return inventory_host.widget.host_pos
+    elif inventory_host:
+      # TODO: remove host_pos from inventory widgets
+      return inventory_host.host_pos
+    
+    return (0, 0)
+  
+  def inventory_opacity(inventory):
+    world = inventory.world
+    player = world.get_player()
+    
+    if not player: return 0
+    if inventory == player.inventory: return 1
+    if tuple(player.pos) not in GameDesignSolutions._inventory_adjacents(inventory):
+      return 0
+    
+    sum_size = sum(stack.size for stack in inventory.stacks)
+    return 0.5 if sum_size == 0 else 1.0
 
 directions = ((1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1))
 

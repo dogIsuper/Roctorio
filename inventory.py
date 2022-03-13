@@ -2,6 +2,7 @@ from kivy.uix.widget import Widget
 from kivy.factory import Factory
 
 from utils import DisallowInterfaceInstantiation, DivideFrequency
+from utils import GameDesignSolutions
 from resource import ResourceStack
 from invariants import NoExcept
 
@@ -12,7 +13,7 @@ class IInventory(DisallowInterfaceInstantiation):
 class Inventory(IInventory):
   @NoExcept
   def __init__(self, world, host, slots):
-    self.stacks = [ResourceStack(0)] * slots
+    self.stacks = [ResourceStack(0) for i in range(slots)]
     self.canvas = world.canvas
     self.world = world
     self.widget = None
@@ -54,7 +55,7 @@ class Inventory(IInventory):
     return stack
   
   @NoExcept
-  @DivideFrequency(8)
+  @DivideFrequency(80)
   def debug_print(self, *a, **k):
     print(*a, **k)
   
@@ -75,19 +76,17 @@ class Inventory(IInventory):
     
     # TODO: remove forcing widget position
     # widget.host = ... must work as well, but for some reason doesn't
-    self.widget.pos = self.widget.host.host_pos
+    self.widget.pos = GameDesignSolutions.inventory_position(self.host)
     
     if debug:
       self.debug_print('selected host', self.widget.host,
                        'pos', self.widget.host.host_pos,
                        'widget pos', self.widget.pos)
     
-    sum_size = 0
     for stack in self.stacks:
       stack.draw(self)
-      sum_size += stack.size
     
-    self.widget.opacity = 0.3 if sum_size == 0 else 1
+    self.widget.opacity = GameDesignSolutions.inventory_opacity(self)
   
   @NoExcept
   def pop_resource(self, resource):

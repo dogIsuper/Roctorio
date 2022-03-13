@@ -9,6 +9,8 @@
 #:import COS math.cos
 #:import pi math.pi
 
+#:import GDSolutions utils.GameDesignSolutions
+
 #:set d60 -pi / 3
 
 #:set SIZE      128
@@ -221,13 +223,13 @@
   
   size_hint:            None, None
   size:                 self.minimum_width, self.minimum_height
-  pos:                  self.host.host_pos if self.host else (0, 0)
+  pos:                  GDSolutions.inventory_position(self.host)
   
   padding:              4, 4
   spacing:              4, 4
   
   on_host:
-    self.pos = self.host.host_pos
+    self.pos = GDSolutions.inventory_position(self.host)
   
 ### drawing utils end ###
 

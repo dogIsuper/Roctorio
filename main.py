@@ -2,7 +2,7 @@
 # Roctorio is game similar to Factorio which uses hexagonal field.
 # You control the raccoon that tries to build his base on an unknown planet.
 #
-# (c) 2021, ProgramCrafter, dogIsuper, KarmaNT, SmartMushroom, JustWannaLive
+# (c) 2021-2022, ProgramCrafter, dogIsuper, KarmaNT, SmartMushroom, JustWannaLive
 
 from kivy.config import Config
 Config.set('graphics', 'maxfps', 2000)
