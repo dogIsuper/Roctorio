@@ -52,7 +52,7 @@ class GridWorld(IWorld):
     # assert(self.get_mech(1, 2, 1))
     
     print(Entity.tx_source)
-    self.entities = [Entity(self, 3, 5), EntityPlayer(self, 3, 3)]
+    self.entities = [Entity(self, 3, 5), EntityPlayer(self, 1, 1)]
     
     self.get_player().inventory.push(resource.GetType('roctorio:item:water:')(1))
     

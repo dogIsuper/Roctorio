@@ -122,22 +122,32 @@ class GameDesignSolutions:
       except ValueError:
         return (0, 0)
       
-      # FIXME: message below
-      SIZE = GameDesignSolutions.SIZE * 2 / 3
-      if side == 0: return cx + SIZE / 4, cy + SIZE / 4
-      if side == 1: return cx + SIZE / 4, cy - SIZE / 4
+      SIZE = GameDesignSolutions.SIZE
+      if side == 0: return cx + SIZE / 3, cy + SIZE / 6
+      if side == 1: return cx + SIZE / 3, cy - SIZE / 6
+      if side == 2: return cx - inventory.widget.width / 3, cy - SIZE / 3
+      if side == 3: return cx - inventory.widget.width, cy - SIZE / 6
+      if side == 4: return cx - inventory.widget.width, cy + SIZE / 6
+      if side == 5: return cx - inventory.widget.width / 3, cy + SIZE / 3
+    elif isinstance(inventory_host, Decoration):
+      cx, cy = inventory_host.widget.pos
       
-      # useless, as side is normalized to (0, 1)
-      # we shall use the raccoon's position
-      if side == 2: return cx, cy - SIZE / 2
-      if side == 3: return cx - SIZE, cy - SIZE / 4
-      if side == 4: return cx - SIZE, cy + SIZE / 4
-      if side == 5: return cx, cy + SIZE / 2
-    # elif isinstance(inventory_host, Decoration):
-    #   return inventory_host.widget.host_pos
-    # elif inventory_host:
-    #   # TODO: remove host_pos from inventory widgets
-    #   return inventory_host.host_pos
+      try:
+        side = [DecorCoordNormalizer.normalize(*a) for a in
+          TileCoordNormalizer.adjacent_decos(*player.pos)].index(
+            (*inventory_host.pos, inventory_host.side))
+      except ValueError:
+        return (0, 0)
+      
+      SIZE = GameDesignSolutions.SIZE
+      if side == 0: return cx + SIZE, cy + SIZE * 3 / 8
+      if side == 1: return cx + SIZE * 5 / 8, cy - SIZE / 8 - 8
+      if side == 2: return cx - 20, cy - SIZE / 8 - 8
+      if side == 3: return cx + SIZE * 7 / 8 - inventory.widget.width, cy + SIZE * 3 / 8
+      if side == 4: return cx + SIZE * 3 / 8 - 8, cy + SIZE / 8
+      if side == 5: return cx + SIZE * 3 / 4 - inventory.widget.width, cy + SIZE / 8
+    elif inventory_host:
+      return inventory_host.host_pos
     
     return (0, 0)
   
@@ -151,7 +161,7 @@ class GameDesignSolutions:
       return 0
     
     sum_size = sum(stack.size for stack in inventory.stacks)
-    return 0.5 if sum_size == 0 else 1.0
+    return 0.7 if sum_size == 0 else 1.0
 
 directions = ((1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1))
 
