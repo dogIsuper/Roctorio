@@ -104,29 +104,40 @@ class GameDesignSolutions:
       return host.adjacent_tiles()
     return []
   
-  def inventory_position(inventory_host):
+  def inventory_position(inventory, inventory_host):
     from mechanism import Mechanism
     from decoration import Decoration
     
+    player = inventory.world.get_player()
+    
+    if not player: return (0, 0)
+    
     if isinstance(inventory_host, Mechanism):
-      cx, cy, side = *inventory_host.widget.pos, inventory_host.side
+      cx, cy = inventory_host.widget.pos
+      
+      try:
+        side = [MechCoordNormalizer.normalize(*a) for a in 
+          TileCoordNormalizer.adjacent_mechs(*player.pos)].index(
+            (*inventory_host.pos, inventory_host.side))
+      except ValueError:
+        return (0, 0)
       
       # FIXME: message below
-      SIZE = GameDesignSolutions.SIZE
+      SIZE = GameDesignSolutions.SIZE * 2 / 3
       if side == 0: return cx + SIZE / 4, cy + SIZE / 4
       if side == 1: return cx + SIZE / 4, cy - SIZE / 4
       
-      # useless, as position is normalized to (0, 1)
+      # useless, as side is normalized to (0, 1)
       # we shall use the raccoon's position
       if side == 2: return cx, cy - SIZE / 2
       if side == 3: return cx - SIZE, cy - SIZE / 4
       if side == 4: return cx - SIZE, cy + SIZE / 4
       if side == 5: return cx, cy + SIZE / 2
-    elif isinstance(inventory_host, Decoration):
-      return inventory_host.widget.host_pos
-    elif inventory_host:
-      # TODO: remove host_pos from inventory widgets
-      return inventory_host.host_pos
+    # elif isinstance(inventory_host, Decoration):
+    #   return inventory_host.widget.host_pos
+    # elif inventory_host:
+    #   # TODO: remove host_pos from inventory widgets
+    #   return inventory_host.host_pos
     
     return (0, 0)
   

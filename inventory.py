@@ -76,7 +76,7 @@ class Inventory(IInventory):
     
     # TODO: remove forcing widget position
     # widget.host = ... must work as well, but for some reason doesn't
-    self.widget.pos = GameDesignSolutions.inventory_position(self.host)
+    self.widget.pos = GameDesignSolutions.inventory_position(self, self.host)
     
     if debug:
       self.debug_print('selected host', self.widget.host,
