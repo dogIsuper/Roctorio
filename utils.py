@@ -93,7 +93,8 @@ class MechCoordNormalizer:
       return (px, py, 0), (px, py, 1), (px + 1, py, 2)
 
 class GameDesignSolutions:
-  SIZE = 128
+  SIZE = 96
+  UNIT = 45
   
   def _inventory_adjacents(inventory):
     from mechanism import Mechanism
@@ -125,10 +126,10 @@ class GameDesignSolutions:
       SIZE = GameDesignSolutions.SIZE
       if side == 0: return cx + SIZE / 3, cy + SIZE / 6
       if side == 1: return cx + SIZE / 3, cy - SIZE / 6
-      if side == 2: return cx - inventory.widget.width / 3, cy - SIZE / 3
+      if side == 2: return cx - inventory.widget.width / 3, cy - SIZE * 2 / 5
       if side == 3: return cx - inventory.widget.width, cy - SIZE / 6
       if side == 4: return cx - inventory.widget.width, cy + SIZE / 6
-      if side == 5: return cx - inventory.widget.width / 3, cy + SIZE / 3
+      if side == 5: return cx - inventory.widget.width / 3, cy + SIZE * 2 / 5
     elif isinstance(inventory_host, Decoration):
       cx, cy = inventory_host.widget.pos
       
@@ -141,11 +142,11 @@ class GameDesignSolutions:
       
       SIZE = GameDesignSolutions.SIZE
       if side == 0: return cx + SIZE, cy + SIZE * 3 / 8
-      if side == 1: return cx + SIZE * 5 / 8, cy - SIZE / 8 - 8
-      if side == 2: return cx - 20, cy - SIZE / 8 - 8
+      if side == 1: return cx + SIZE * 5 / 8 + 4, cy - SIZE / 8
+      if side == 2: return cx - 24, cy - SIZE / 8
       if side == 3: return cx + SIZE * 7 / 8 - inventory.widget.width, cy + SIZE * 3 / 8
-      if side == 4: return cx + SIZE * 3 / 8 - 8, cy + SIZE / 8
-      if side == 5: return cx + SIZE * 3 / 4 - inventory.widget.width, cy + SIZE / 8
+      if side == 4: return cx + SIZE * 3 / 8 - 12, cy + SIZE / 8
+      if side == 5: return cx + SIZE * 3 / 4 - inventory.widget.width + 4, cy + SIZE / 8
     elif inventory_host:
       return inventory_host.host_pos
     

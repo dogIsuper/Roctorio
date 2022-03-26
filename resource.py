@@ -92,8 +92,8 @@ class ResourceStack(IResourceStack):
     selected_inv = world.get_inventory(self.widget) or self.inventory
     assert(self.inventory, 'otherwise the widget could not be dragged')
     
-    if selected_inv != self.inventory:
-      self.inventory.push(selected_inv.push(self.inventory.pop_resource(self)))
+    # if selected_inv != self.inventory:
+    self.inventory.push(selected_inv.push(self.inventory.pop_resource(self)))
 
 @NoExcept
 def RegisterType(id, callbacks): # tx_source, limit

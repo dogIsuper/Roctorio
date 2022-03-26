@@ -38,12 +38,17 @@ class RoctorioGameThread:
       self.app.game.step()
     step_end = time.time()
     
+    if not self.pause_level:
+      self.app.game.step()
+    
     sps = 1.0 / max(step_end - step_start, 0.0001) # simulation steps per second
     
     if sps > 500:
       sps = 100 * (sps // 100)
     elif sps > 100:
       sps = 10 * (sps // 10)
+    else:
+      sps = 0.5 * (sps // 0.5)
     
     self.app.root.ids.tps_meter.text = 'TPS: %.3f\nSPS: %.3f' % (self.app.tps, sps)
     
