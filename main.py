@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # [Participating in Game Off 2021]
 # Roctorio is game similar to Factorio which uses hexagonal field.
 # You control the raccoon that tries to build his base on an unknown planet.
